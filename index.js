@@ -41,4 +41,4 @@ object.getFilePath = function(corpusPath, id, type, label, extension) {
   };
 };
 
-module.exports = business;
+module.exports = object;
