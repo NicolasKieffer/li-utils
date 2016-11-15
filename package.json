@@ -1,0 +1,15 @@
+{
+  "name": "rd-utils",
+  "version": "1.0.0",
+  "description": "Regroupement des fonctions utiles à tous les modules RD",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://git.istex.fr/git/kieffer/rd-utils.git"
+  },
+  "author": "istex-rd",
+  "license": "ISC"
+}
