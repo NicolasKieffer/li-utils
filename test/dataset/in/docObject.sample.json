@@ -1,0 +1,42 @@
+{
+  "idIstex": "0000000000000000000000000000000000000000",
+  "metadata": [{
+    "mime": "application/xml",
+    "path": "file.xml",
+    "original": false
+  }, {
+    "mime": "application/mods+xml",
+    "path": "file.mods.xml",
+    "original": false
+  }],
+  "fulltext": [{
+    "mime": "application/pdf",
+    "path": "file.pdf",
+    "original": true
+  }, {
+    "mime": "application/pdf",
+    "path": "file.unoriginal.pdf",
+    "original": false
+  }, {
+    "mime": "text/plain",
+    "path": "file.txt",
+    "original": true
+  }, {
+    "mime": "text/plain",
+    "path": "file.unoriginal.txt",
+    "original": false
+  }],
+  "annexes": [{
+    "path": "file.first.jpeg",
+    "original": true,
+    "mime": "image/jpeg"
+  }, {
+    "path": "file.second.jpeg",
+    "original": true,
+    "mime": "image/jpeg"
+  }, {
+    "path": "file.first.png",
+    "original": true,
+    "mime": "image/png"
+  }]
+}
