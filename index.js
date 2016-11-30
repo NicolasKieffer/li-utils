@@ -44,7 +44,7 @@ object.files.selectAll = function(files, options) {
     }
   }
   return result;
-}
+};
 
 /**
  * Retourne le premier objet du Tableau de fichier respectant l'un des "ensemble de critères" spécifiées
@@ -64,7 +64,7 @@ object.files.select = function(files, options) {
     if (result) return result;
   }
   return null;
-}
+};
 
 /**
  * Retourne le premier objet du Tableau de fichier respectant tous les critères spécifiées
@@ -86,7 +86,7 @@ object.files.get = function(files, criteria) {
     if (found) return files[i];
   }
   return null;
-}
+};
 
 /**
  * Retourne les infos nécessaires pour la lecture ou la création d'un fichier dans la chaîne Istex
@@ -110,7 +110,7 @@ object.files.createPath = function(options) {
     };
   }
   return result;
-}
+};
 
 
 /**
@@ -121,7 +121,7 @@ object.files.createPath = function(options) {
 // Fonction de selection avec try/catch intégré
 object.XML.load = function (xmlStr) {
   return xm.load(xmlStr);
-}
+};
 
 /**
  * Retourne les élement présent dans un xml "JSONifié" correspondant au sélecteur indiqué
@@ -135,6 +135,6 @@ object.XML.select = function (selector, jsonObject) {
   } catch (e) {
     console.log(e);
   }
-}
+};
 
 module.exports = object;
