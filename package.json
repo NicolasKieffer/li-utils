@@ -13,6 +13,8 @@
   "author": "istex",
   "license": "ISC",
   "dependencies": {
+    "JSONSelect": "^0.4.0",
+    "xml-mapping": "^1.7.1",
     "async": "^2.1.4",
     "chai": "^3.4.0",
     "mocha": "^2.3.3"
