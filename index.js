@@ -4,7 +4,9 @@
 'use strict';
 
 /* Module Require */
-var path = require('path'),
+var JSONSelect = require('JSONSelect'),
+  xm = require('xml-mapping'),
+  path = require('path'),
   extend = require('util')._extend;
 
 var object = {};
@@ -108,6 +110,31 @@ object.files.createPath = function(options) {
     };
   }
   return result;
+}
+
+
+/**
+ * Parse le contenu d'un fichier XML
+ * @param {str} xmlStr Sélecteur
+ * @return {Object} Objet JSON représentant le document XML
+ */
+// Fonction de selection avec try/catch intégré
+object.XML.load = function (xmlStr) {
+  return xm.load(xmlStr);
+}
+
+/**
+ * Retourne les élement présent dans un xml "JSONifié" correspondant au sélecteur indiqué
+ * @param {str} selector Sélecteur
+ * @param {Object} jsonObject Objet JSON représentant un document xml
+ * @return {Array} Array contenant les éléments sélectionnés
+ */
+object.XML.select = function (selector, jsonObject) {
+  try {
+    return JSONSelect.match(selector, jsonObject);
+  } catch (e) {
+    console.log(e);
+  }
 }
 
 module.exports = object;
