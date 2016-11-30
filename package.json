@@ -1,15 +1,20 @@
 {
-  "name": "rd-utils",
+  "name": "li-utils",
   "version": "1.0.0",
-  "description": "Regroupement des fonctions utiles à tous les modules RD",
+  "description": "Regroupement des fonctions utiles à tous les modules de la chaîne LoadIstex",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha -t 120000"
   },
   "repository": {
     "type": "git",
-    "url": "https://git.istex.fr/git/kieffer/rd-utils.git"
+    "url": "https://git.istex.fr/git/kieffer/li-utils.git"
   },
-  "author": "istex-rd",
-  "license": "ISC"
+  "author": "istex",
+  "license": "ISC",
+  "dependencies": {
+    "async": "^2.1.4",
+    "chai": "^3.4.0",
+    "mocha": "^2.3.3"
+  }
 }
