@@ -11,7 +11,7 @@ var JSONSelect = require('JSONSelect'),
 
 var object = {};
 
-// Regroupe toutes les fonctions liées aux fichiers dans la chaine LoadIstex
+// Regroupe les fonctions liées aux fichiers dans la chaine LoadIstex
 object.files = {};
 
 /**
@@ -112,6 +112,8 @@ object.files.createPath = function(options) {
   return result;
 };
 
+// Regroupe les fonctions liées aux traitement des XML
+object.XML = {};
 
 /**
  * Parse le contenu d'un fichier XML
