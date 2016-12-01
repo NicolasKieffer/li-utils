@@ -139,4 +139,23 @@ object.XML.select = function (selector, jsonObject) {
   }
 };
 
+// Regroupe les fonctions liées aux traitement des URL
+object.URL = {};
+
+/**
+ * Construit l'url d'une requête http GET
+ * @param {string} url Toutes la partie de l'url avant le '?'
+ * @param {Object} parameters Paramètres à ajouter à l'url (après le '?')
+ * @return {string} L'url complète encodée
+ */
+object.URL.addParameters = function(url, parameters) {
+  var keys = Object.keys(parameters),
+    result = '?',
+    separator = '&';
+  for (var i = 0; i < keys.length; i++) {
+    result += keys[i] + '=' + encodeURIComponent(parameters[keys[i]]) + ((i < keys.length - 1) ? '&' : '');
+  }
+  return url + result;
+}
+
 module.exports = object;
