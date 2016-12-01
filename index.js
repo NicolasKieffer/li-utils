@@ -118,11 +118,11 @@ object.XML = {};
 /**
  * Parse le contenu d'un fichier XML
  * @param {str} xmlStr Sélecteur
- * @return {Object} Objet JSON représentant le document XML
+ * @return {Object} Objet JSON représentant le document XML ou null
  */
-// Fonction de selection avec try/catch intégré
 object.XML.load = function (xmlStr) {
-  return xm.load(xmlStr);
+  var result = xm.load(xmlStr);
+  return (Object.keys(result).length > 0) ? result : null;
 };
 
 /**
