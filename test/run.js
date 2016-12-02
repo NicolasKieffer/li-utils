@@ -32,13 +32,13 @@ var data = {
 
 /**
  * Test de chaques fonctions de :
- * + myObject.files :
+ * - myObject.files.
  *   - selectAll()
  *   - select()
  *   - get()
  *   - createPath()
  *
- * + myObject.XML :
+ * - myObject.XML.
  *   - load()
  *   - select()
  */
@@ -53,6 +53,22 @@ describe(pkg.name + '/index.js', function() {
     return callback();
   });
 });
+
+// Cette fonction permet d'effecetuer le test correspondant au résultat souhaité
+function test(value, result) {
+  if (result.not) {
+    // Si on doit tester que la valeur retournée n'est pas égale à
+    return expect(value).to.not.equal(result.value);
+  } else if (result.length) {
+    // Si on doit tester la longueur la valeur retournée
+    return expect(value).to.have.length(result.value);
+  } else if (result.typeof) {
+    // Si on doit tester que le type de la valeur retournée n'est pas égale à
+    return expect(typeof result).to.equal(result.value);
+  }
+  // Si on doit tester que la valeur retournée est pas égale à
+  return expect(value).to.equal(result.value);
+}
 
 // Set une regex pour chaque clée demandée
 function setRegex(keys, options) {
@@ -80,18 +96,7 @@ function testOfFileRepresentation(values, testedFunction) {
       if (item.regExp) {
         setRegex(item.regExp, item.options);
       }
-      // Si on doit tester la longueur la valeur retournée
-      if (item.result.length) {
-        expect(testedFunction(docObject[item.container], item.options)).to.have.length(item.result.value);
-        return done();
-      }
-      // Si on doit tester que la valeur retournée n'est pas égale à
-      if (item.result.not) {
-        expect(testedFunction(docObject[item.container], item.options)).to.not.equal(item.result.value);
-        return done();
-      }
-      // Si on doit tester que la valeur retournée est pas égale à
-      expect(testedFunction(docObject[item.container], item.options)).to.equal(item.result.value);
+      test(testedFunction(docObject[item.container], item.options), item.result);
       return done();
     });
     return callback();
@@ -105,13 +110,7 @@ function testOfFileRepresentation(values, testedFunction) {
 function testOfCreateFilePath(values, testedFunction) {
   async.eachSeries(values, function(item, callback) {
     it(item.label, function(done) {
-      // Si on doit tester que la valeur retournée n'est pas égale à
-      if (item.result.not) {
-        expect(testedFunction(item.options)).to.not.equal(item.result.value);
-        return done();
-      }
-      // Si on doit tester que la valeur retournée est pas égale à
-      expect(testedFunction(item.options)).to.equal(item.result.value);
+      test(testedFunction(item.options), item.result);
       return done();
     });
     return callback();
@@ -127,13 +126,7 @@ function testOfXmlLoad(values, testedFunction) {
     // Fichier XML de test
     var xmlStr = fs.readFileSync(path.join(__dirname, item.path), 'utf-8');
     it(item.label, function(done) {
-      var result = testedFunction(xmlStr);
-      // Si on doit tester que la valeur retournée n'est pas égale à
-      if (item.result.typeof) {
-        result = typeof result;
-      }
-      // Si on doit tester que la valeur retournée est pas égale à
-      expect(result).to.equal(item.result.value);
+      test(testedFunction(xmlStr), item.result);
       return done();
     });
     return callback();
@@ -148,10 +141,10 @@ function testOfXmlSelection(values, testedFunction) {
   async.eachSeries(values, function(item, callback) {
     // Fichier XML de test
     var xmlStr = fs.readFileSync(path.join(__dirname, item.path), 'utf-8');
+    var xml = myObject.XML.load(xmlStr);
     it(item.label, function(done) {
-      var xml = myObject.XML.load(xmlStr);
       // Si on doit tester que la valeur retournée est pas égale à
-      expect(testedFunction(item.query, xml)[0]).to.equal(item.result.value);
+      test(testedFunction(item.query, xml)[0], item.result);
       return done();
     });
     return callback();
