@@ -10,7 +10,7 @@ var pkg = require('../package.json'),
   chai = require('chai'),
   expect = chai.expect;
 
-// Mapping indiquant quelle fonction de test utiliser lors de chaque test
+// Mapping indiquant quelle fonction de test utiliser pour chaque fonction
 var mapTests = {
   "files": {
     "selectAll": testOfFileRepresentation,
@@ -45,9 +45,12 @@ var data = {
 describe(pkg.name + '/index.js', function() {
   async.eachSeries(Object.keys(data), function(k, callback) {
     async.eachSeries(Object.keys(data[k]), function(key, callback) {
-      describe('#' + k + '.' + key + '()', function() {
-        mapTests[k][key](data[k][key], myObject[k][key]);
-      });
+      // Permet de filtrer les propriétées de l'objets qui ne sont pas des fonctions
+      if (typeof myObject[k][key] === 'function') {
+        describe('#' + k + '.' + key + '()', function() {
+          mapTests[k][key](data[k][key], myObject[k][key]);
+        });
+      }
       return callback();
     });
     return callback();
