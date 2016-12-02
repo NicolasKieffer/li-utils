@@ -1,48 +1,56 @@
 {
   "selectAll": [{
     "label": "Devrait trouver 3 images dans les annexes (avec une RegExp)",
-    "container": "annexes",
     "regExp": ["mime"],
-    "options": [{
-      "mime": "image",
-      "original": true
-    }],
+    "container": "annexes",
+    "arguments": {
+      "options": [{
+        "mime": "image",
+        "original": true
+      }]
+    },
     "result": {
       "length": true,
       "value": 3
     }
   }, {
     "label": "Ne devrait rien trouver dans les annexes (avec une RegExp)",
-    "container": "annexes",
     "regExp": ["mime"],
-    "options": [{
-      "mime": "text",
-      "original": true
-    }],
+    "container": "annexes",
+    "arguments": {
+      "options": [{
+        "mime": "text",
+        "original": true
+      }]
+    },
     "result": {
       "length": true,
       "value": 0
     }
   }, {
     "label": "Devrait trouver 2 images (jpeg) dans les annexes (sans RegExp)",
-    "container": "annexes",
     "regExp": ["mime"],
-    "options": [{
-      "mime": "image/jpeg",
-      "original": true
-    }],
+    "container": "annexes",
+    "arguments": {
+      "options": [{
+        "mime": "image/jpeg",
+        "original": true
+      }]
+    },
     "result": {
       "length": true,
       "value": 2
     }
   }, {
     "label": "Ne devrait rien trouver dans les annexes (sans RegExp)",
-    "container": "annexes",
     "regExp": ["mime"],
-    "options": [{
-      "mime": "text/plain",
-      "original": true
-    }],
+    "container": "annexes",
+    "arguments": {
+      "options": [{
+        "mime": "text/plain",
+        "original": true
+      }]
+    },
     "result": {
       "length": true,
       "value": 0
@@ -51,25 +59,29 @@
   "select": [{
     "label": "Devrait trouver un fichier texte dans les données fulltext",
     "container": "fulltext",
-    "options": [{
-      "mime": "text/plain",
-      "original": false
-    }, {
-      "mime": "text/plain",
-      "original": true
-    }],
+    "arguments": {
+      "options": [{
+        "mime": "text/plain",
+        "original": false
+      }, {
+        "mime": "text/plain",
+        "original": true
+      }]
+    },
     "result": {
       "not": true,
       "value": null
     }
   }, {
     "label": "Devrait trouver une image dans les annexes (avec une RegExp)",
-    "container": "annexes",
     "regExp": ["mime"],
-    "options": [{
-      "mime": "image",
-      "original": true
-    }],
+    "container": "annexes",
+    "arguments": {
+      "options": [{
+        "mime": "image",
+        "original": true
+      }]
+    },
     "result": {
       "not": true,
       "value": null
@@ -77,9 +89,11 @@
   }, {
     "label": "Ne devrait pas trouver un fichier texte dans les annexes",
     "container": "annexes",
-    "options": [{
-      "mime": "text/plain"
-    }],
+    "arguments": {
+      "options": [{
+        "mime": "text/plain"
+      }]
+    },
     "result": {
       "value": null
     }
@@ -87,8 +101,10 @@
   "get": [{
     "label": "Devrait trouver un fichier mods dans les metadata",
     "container": "metadata",
-    "options": {
-      "mime": "application/mods+xml"
+    "arguments": {
+      "options": {
+        "mime": "application/mods+xml"
+      }
     },
     "result": {
       "not": true,
@@ -97,20 +113,24 @@
   }, {
     "label": "Ne devrait pas trouver un fichier mods dans les metadata",
     "container": "metadata",
-    "options": {
-      "mime": "application/mods+xml",
-      "original": true
+    "arguments": {
+      "options": {
+        "mime": "application/mods+xml",
+        "original": true
+      }
     },
     "result": {
       "value": null
     }
   }, {
     "label": "Devrait trouver un fichier mods dans les metadata (avec une RegExp)",
-    "container": "metadata",
     "regExp": ["mime"],
-    "options": {
-      "mime": "mods",
-      "original": false
+    "container": "metadata",
+    "arguments": {
+      "options": {
+        "mime": "mods",
+        "original": false
+      }
     },
     "result": {
       "not": true,
@@ -118,11 +138,13 @@
     }
   }, {
     "label": "Ne devrait pas trouver un fichier mods dans les metadata (avec une RegExp)",
-    "container": "metadata",
     "regExp": ["mime"],
-    "options": {
-      "mime": "mods+xml",
-      "original": true
+    "container": "metadata",
+    "arguments": {
+      "options": {
+        "mime": "mods+xml",
+        "original": true
+      }
     },
     "result": {
       "value": null
@@ -130,7 +152,7 @@
   }],
   "createPath": [{
     "label": "Devrait retourner un chemin correctement construit (non null)",
-    "options": {
+    "arguments": {
       "corpusPath": "/my/path/",
       "id": "0000000000000000000000000000000000000000",
       "type": "enrichments",
@@ -143,7 +165,7 @@
     }
   }, {
     "label": "Devrait retourner null",
-    "options": {
+    "arguments": {
       "corpusPath": "/my/path/",
       "type": "enrichments",
       "label": "mymodule",
