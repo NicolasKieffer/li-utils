@@ -3,13 +3,13 @@
 
 var pkg = require('../package.json'),
   myObject = require('../index.js'),
-  docObject = require('./dataset/in/docObject.sample.json'),
   TU = require('rd-tu'),
   fs = require('fs'),
   path = require('path');
 
 // Données de test
-var dataset = {
+var docObject = require('./dataset/in/docObject.sample.json'),
+  dataset = {
   files: require('./dataset/in/test.files.json'),
   XML: require('./dataset/in/test.XML.json')
 };
