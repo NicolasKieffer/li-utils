@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://git.istex.fr/git/kieffer/li-utils.git"
+    "url": "https://git.istex.fr/git/istex/li-utils.git"
   },
   "author": "istex",
   "license": "ISC",
@@ -18,6 +18,6 @@
     "async": "^2.1.4",
     "chai": "^3.4.0",
     "mocha": "^2.3.3",
-    "rd-tu": "git+ssh://vsistex.intra.inist.fr:22222/kieffer/rd-tu.git"
+    "rd-tu": "git+ssh://vsistex.intra.inist.fr:22222/istex/rd-tu.git"
   }
 }
