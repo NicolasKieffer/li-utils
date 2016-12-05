@@ -51,9 +51,9 @@ TU.start({
  * Fonction de test à appliquée pour :
  * - myObject.XML.load()
  */
-function testOfXmlLoad(fn, item) {
+function testOfXmlLoad(fn, item, cb) {
   var xmlStr = fs.readFileSync(path.join(__dirname, item.path), 'utf-8');
-  return fn(xmlStr);
+  return cb(fn(xmlStr));
 }
 
 /**
@@ -62,19 +62,19 @@ function testOfXmlLoad(fn, item) {
  * - myObject.files.select()
  * - myObject.files.get()
  */
-function testOfFileRepresentation(fn, item) {
+function testOfFileRepresentation(fn, item, cb) {
   if (item.regExp) setRegex(item.regExp, item.arguments.options);
-  return fn(docObject[item.container], item.arguments.options);
+  return cb(fn(docObject[item.container], item.arguments.options));
 }
 
 /**
  * Fonction de test à appliquée pour :
  * - myObject.XML.select()
  */
-function testOfXmlSelection(fn, item) {
+function testOfXmlSelection(fn, item, cb) {
   var xmlStr = fs.readFileSync(path.join(__dirname, item.path), 'utf-8');
   var jsonObject = myObject.XML.load(xmlStr);
-  return fn(item.arguments.selector, jsonObject)[0];
+  return cb(fn(item.arguments.selector, jsonObject)[0]);
 }
 
 // Set une regex pour chaque clée demandée
