@@ -3,14 +3,13 @@
     "label": "Devrait parser un fichier xml",
     "path": "./dataset/in/file.mods.xml",
     "result": {
-      "be": true,
-      "value": "object"
+      "be": "object"
     }
   }, {
     "label": "Ne devrait pas parser de xml (fichier vide)",
     "path": "./dataset/in/empty.mods.xml",
     "result": {
-      "value": null
+      "equal": null
     }
   }],
   "select": [{
@@ -20,7 +19,7 @@
       "selector": ".type:val(\"ISSN\") ~ .$t"
     },
     "result": {
-      "value": "0000000000000000000000000000000000000000"
+      "equal": "0000000000000000000000000000000000000000"
     }
   }, {
     "label": "Ne devrait pas trouver d'identifiant ISBN dans le fichier xml",
