@@ -3,7 +3,7 @@
     "label": "Devrait parser un fichier xml",
     "path": "./dataset/in/file.mods.xml",
     "result": {
-      "typeof": true,
+      "be": true,
       "value": "object"
     }
   }, {
