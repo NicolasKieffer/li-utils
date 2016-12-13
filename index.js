@@ -6,6 +6,8 @@
 /* Module Require */
 var JSONSelect = require('JSONSelect'),
   xm = require('xml-mapping'),
+  mkdirp = require('mkdirp'),
+  fs = require('fs'),
   path = require('path'),
   extend = require('util')._extend;
 
@@ -18,12 +20,12 @@ object.files = {};
  * Retourne les objets du Tableau de fichier respectant au moins un des "ensemble de critères" spécifiées
  * Exemple : Je souhaite récupérer le fichier txt généré par LoadIstex ou un fichier txt
  *   files = docObject.fulltext (paramètre du docObject contenant les infos liées au fulltext)
- *   data = [
- *     { mime: 'text/plain', original: false }, --> ficher txt généré par LoadIstex
+ *   options = [
+ *     { mime: 'text/plain', original: false }, --> ficher txt généré par LoadIstex (original = false)
  *     { mime: 'text/plain'}                    --> ficher txt
  *   ]
  * @param {Array} files (jsonLine.metadata || jsonLine.fulltext)
- * @param {Array} data Liste (ordonnées) des caractéristiques du document recherché
+ * @param {Array} options Liste (ordonnées) des caractéristiques du document recherché
  * @return {Array} L'objet correspondant le mieux aux critères ou []
  */
 object.files.selectAll = function(files, options) {
@@ -56,7 +58,7 @@ object.files.selectAll = function(files, options) {
  *   ]
  * @param {Array} files (jsonLine.metadata || jsonLine.fulltext)
  * @param {Array} options Liste (ordonnées) des caractéristiques du document recherché
- * @return {object} L'objet correspondant le mieux aux critères ou null
+ * @return {Object} L'objet correspondant le mieux aux critères ou null
  */
 object.files.select = function(files, options) {
   for (var i = 0; i < options.length; i++) {
@@ -73,7 +75,7 @@ object.files.select = function(files, options) {
  *   criteria = { mime: 'text/plain', original: false }, --> ficher txt généré par LoadIstex
  * @param {Array} files Tableau d'objet représentant un ensemble de fichier (ex : jsonLine.metadata || jsonLine.fulltext)
  * @param {Object} criteria Objet regroupant les critères du document recherché
- * @return {object} L'objet correspondant ou null
+ * @return {Object} L'objet correspondant ou null
  */
 object.files.get = function(files, criteria) {
   var keys = Object.keys(criteria);
@@ -94,12 +96,12 @@ object.files.get = function(files, criteria) {
  *  - directory => [corpusPath]/0/1/2/0123456789012345678901234567890123456789/[type]/([label]/)
  *  - filename => 0123456789012345678901234567890123456789.([label].)[extension]
  * @param {Object} options Objet comportant toutes les informations nécessaire à la création du chemin :
- *  - {str} corpusPath Chemin du corpusOutput
- *  - {str} id Id Istex du document
- *  - {str} type Type de document (metadata | enrichements | fulltext)
- *  - {str} label Label du module (ce qui permet d'ajouter un sous-répertoire dédié au module, utile dans le cas où plusieurs enrichissements différents peuvent être produits)
- *  - {str} extension Extension du document (ex : .tei.xml)
- * @return {object} fileInfos sous la forme : { filemane, directory }
+ *  - {String} corpusPath Chemin du corpusOutput
+ *  - {String} id Id Istex du document
+ *  - {String} type Type de document (metadata | enrichements | fulltext)
+ *  - {String} label Label du module (ce qui permet d'ajouter un sous-répertoire dédié au module, utile dans le cas où plusieurs enrichissements différents peuvent être produits)
+ *  - {String} extension Extension du document (ex : .tei.xml)
+ * @return {Object} fileInfos sous la forme : { filemane, directory }
  */
 object.files.createPath = function(options) {
   var result = null;
@@ -112,26 +114,42 @@ object.files.createPath = function(options) {
   return result;
 };
 
+// Regroupe les fonctions liées aux répertoires dans la chaine LoadIstex
+object.directories = {}
+
+/**
+ * Créer un répertoire s'il n'existe pas déjà
+ * @param {String} path Chemin du répertoire à créer
+ * @return {undefined} Return undefined
+ */
+object.directories.sync = function(path) {
+  // Si le répertoire n'existe pas
+  if (!fs.existsSync(path)) {
+    // Création du répertoire
+    mkdirp.sync(path);
+  }
+}
+
 // Regroupe les fonctions liées aux traitement des XML
 object.XML = {};
 
 /**
  * Parse le contenu d'un fichier XML
- * @param {str} xmlStr Sélecteur
+ * @param {String} xmlStr Sélecteur
  * @return {Object} Objet JSON représentant le document XML ou null
  */
-object.XML.load = function (xmlStr) {
+object.XML.load = function(xmlStr) {
   var result = xm.load(xmlStr);
   return (Object.keys(result).length > 0) ? result : null;
 };
 
 /**
  * Retourne les élement présent dans un xml "JSONifié" correspondant au sélecteur indiqué
- * @param {str} selector Sélecteur
+ * @param {String} selector Sélecteur
  * @param {Object} jsonObject Objet JSON représentant un document xml
  * @return {Array} Array contenant les éléments sélectionnés
  */
-object.XML.select = function (selector, jsonObject) {
+object.XML.select = function(selector, jsonObject) {
   try {
     return JSONSelect.match(selector, jsonObject);
   } catch (e) {
@@ -144,9 +162,9 @@ object.URL = {};
 
 /**
  * Construit l'url d'une requête http GET
- * @param {string} url Toutes la partie de l'url avant le '?'
+ * @param {String} url Toutes la partie de l'url avant le '?'
  * @param {Object} parameters Paramètres à ajouter à l'url (après le '?')
- * @return {string} L'url complète encodée
+ * @return {String} L'url complète encodée
  */
 object.URL.addParameters = function(url, parameters) {
   var keys = Object.keys(parameters),
