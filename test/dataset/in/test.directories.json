@@ -1,0 +1,9 @@
+{
+  "sync":[{
+    "label": "Devrait créer un répertoire dans : ./test/dataset/out/mkdirp",
+    "arguments": "./test/dataset/out/mkdirp",
+    "result": {
+      "be": "undefined"
+    }
+  }]
+}

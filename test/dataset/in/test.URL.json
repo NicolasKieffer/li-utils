@@ -1,0 +1,35 @@
+{
+  "addParameters": [{
+    "label": "Devrait créer l'url suivante : http://www.test.tu/test",
+    "arguments": {
+      "url": "http://www.test.tu/test",
+      "parameters": {}
+    },
+    "result": {
+      "equal": "http://www.test.tu/test?"
+    }
+  }, {
+    "label": "Devrait créer l'url suivante : http://www.test.tu/test?a=1",
+    "arguments": {
+      "url": "http://www.test.tu/test",
+      "parameters": {
+        "a": 1
+      }
+    },
+    "result": {
+      "equal": "http://www.test.tu/test?a=1"
+    }
+  }, {
+    "label": "Devrait créer l'url suivante : http://www.test.tu/test?a=1&b=2",
+    "arguments": {
+      "url": "http://www.test.tu/test",
+      "parameters": {
+        "a": 1,
+        "b": 2
+      }
+    },
+    "result": {
+      "equal": "http://www.test.tu/test?a=1&b=2"
+    }
+  }]
+}

@@ -10,20 +10,28 @@ var pkg = require('../package.json'),
 // Données de test
 var docObject = require('./dataset/in/docObject.sample.json'),
   dataset = {
-  files: require('./dataset/in/test.files.json'),
-  XML: require('./dataset/in/test.XML.json')
+  "files": require('./dataset/in/test.files.json'),
+  "directories": require('./dataset/in/test.directories.json'),
+  "XML": require('./dataset/in/test.XML.json'),
+  "URL": require('./dataset/in/test.URL.json')
 };
 
 // Mapping indiquant quelle fonction de test et quelles données utiliser pour chaque fonction
 var wrapper = {
   "files": {
-    "selectAll": testOfFileRepresentation,
-    "select": testOfFileRepresentation,
-    "get": testOfFileRepresentation
+    "selectAll": testOf_fileRepresentation,
+    "select": testOf_fileRepresentation,
+    "get": testOf_fileRepresentation
+  },
+  "directories": {
+    "sync": null
   },
   "XML": {
-    "load": testOfXmlLoad,
-    "select": testOfXmlSelection
+    "load": testOf_xmlLoad,
+    "select": testOf_xmlSelection
+  },
+  "URL": {
+    "addParameters": testOf_addParameters
   }
 };
 
@@ -51,7 +59,7 @@ TU.start({
  * Fonction de test à appliquée pour :
  * - myObject.XML.load()
  */
-function testOfXmlLoad(fn, item, cb) {
+function testOf_xmlLoad(fn, item, cb) {
   var xmlStr = fs.readFileSync(path.join(__dirname, item.path), 'utf-8');
   return cb(fn(xmlStr));
 }
@@ -62,7 +70,7 @@ function testOfXmlLoad(fn, item, cb) {
  * - myObject.files.select()
  * - myObject.files.get()
  */
-function testOfFileRepresentation(fn, item, cb) {
+function testOf_fileRepresentation(fn, item, cb) {
   if (item.regExp) setRegex(item.regExp, item.arguments.options);
   return cb(fn(docObject[item.container], item.arguments.options));
 }
@@ -71,10 +79,18 @@ function testOfFileRepresentation(fn, item, cb) {
  * Fonction de test à appliquée pour :
  * - myObject.XML.select()
  */
-function testOfXmlSelection(fn, item, cb) {
+function testOf_xmlSelection(fn, item, cb) {
   var xmlStr = fs.readFileSync(path.join(__dirname, item.path), 'utf-8');
   var jsonObject = myObject.XML.load(xmlStr);
   return cb(fn(item.arguments.selector, jsonObject)[0]);
+}
+
+/**
+ * Fonction de test à appliquée pour :
+ * - myObject.URL.addParameters()
+ */
+function testOf_addParameters(fn, item, cb) {
+  return cb(fn(item.arguments.url, item.arguments.parameters));
 }
 
 // Set une regex pour chaque clée demandée
