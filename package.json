@@ -16,6 +16,7 @@
     "JSONSelect": "^0.4.0",
     "xml-mapping": "^1.7.1",
     "async": "^2.1.4",
+    "mkdirp": "^0.5.1",
     "mocha": "^3.2.0",
     "rd-tu": "git+ssh://vsistex.intra.inist.fr:22222/istex/rd-tu.git"
   }
