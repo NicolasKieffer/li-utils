@@ -10,14 +10,18 @@ var pkg = require('../package.json'),
 // Données de test
 var docObject = require('./dataset/in/docObject.sample.json'),
   dataset = {
-  "files": require('./dataset/in/test.files.json'),
-  "directories": require('./dataset/in/test.directories.json'),
-  "XML": require('./dataset/in/test.XML.json'),
-  "URL": require('./dataset/in/test.URL.json')
-};
+    "paths": require('./dataset/in/test.paths.json'),
+    "files": require('./dataset/in/test.files.json'),
+    "directories": require('./dataset/in/test.directories.json'),
+    "XML": require('./dataset/in/test.XML.json'),
+    "URL": require('./dataset/in/test.URL.json')
+  };
 
 // Mapping indiquant quelle fonction de test et quelles données utiliser pour chaque fonction
 var wrapper = {
+  "paths": {
+    "init": testOf_pathsInit
+  },
   "files": {
     "selectAll": testOf_fileRepresentation,
     "select": testOf_fileRepresentation,
@@ -28,15 +32,18 @@ var wrapper = {
   },
   "XML": {
     "load": testOf_xmlLoad,
-    "select": testOf_xmlSelection
+    "select": testOf_xmlSelect
   },
   "URL": {
-    "addParameters": testOf_addParameters
+    "addParameters": testOf_urlAddParameters
   }
 };
 
 /**
  * Test de chaques fonctions de :
+ * - myObject.paths.
+ *   - init()
+ *
  * - myObject.files.
  *   - selectAll()
  *   - select()
@@ -46,6 +53,9 @@ var wrapper = {
  * - myObject.XML.
  *   - load()
  *   - select()
+ *
+ * - myObject.URL.
+ *   - addParameters()
  */
 TU.start({
   description: pkg.name + '/index.js',
@@ -54,6 +64,15 @@ TU.start({
   dataset: dataset,
   wrapper: wrapper
 });
+
+/**
+ * Fonction de test à appliquée pour :
+ * - myObject.paths.init()
+ */
+function testOf_pathsInit(fn, item, cb) {
+  var result = fn(item.arguments.paths, item.arguments.root);
+  return cb(result.test);
+}
 
 /**
  * Fonction de test à appliquée pour :
@@ -79,7 +98,7 @@ function testOf_fileRepresentation(fn, item, cb) {
  * Fonction de test à appliquée pour :
  * - myObject.XML.select()
  */
-function testOf_xmlSelection(fn, item, cb) {
+function testOf_xmlSelect(fn, item, cb) {
   var xmlStr = fs.readFileSync(path.join(__dirname, item.path), 'utf-8');
   var jsonObject = myObject.XML.load(xmlStr);
   return cb(fn(item.arguments.selector, jsonObject)[0]);
@@ -89,7 +108,7 @@ function testOf_xmlSelection(fn, item, cb) {
  * Fonction de test à appliquée pour :
  * - myObject.URL.addParameters()
  */
-function testOf_addParameters(fn, item, cb) {
+function testOf_urlAddParameters(fn, item, cb) {
   return cb(fn(item.arguments.url, item.arguments.parameters));
 }
 

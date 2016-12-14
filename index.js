@@ -13,6 +13,26 @@ var JSONSelect = require('JSONSelect'),
 
 var object = {};
 
+
+// Regroupe les fonctions liées aux chemins
+object.paths = {};
+
+/**
+ * Initialise les chemins d'un module R&D
+ * @param {Object} paths Liste des chemins sous forme d'objet JSON (clé => valeur)
+ * @param {String} root Racine du module
+ * @return {Object} L'objet contenant les chemins initialisés
+ */
+object.paths.init = function(paths, root) {
+  var result = {};
+  for (var k in paths) {
+    if (paths.hasOwnProperty(k) && typeof paths[k] !== 'function') {
+      result[k] = path.join(root, paths[k]);
+    }
+  }
+  return result;
+};
+
 // Regroupe les fonctions liées aux fichiers dans la chaine LoadIstex
 object.files = {};
 
@@ -174,6 +194,6 @@ object.URL.addParameters = function(url, parameters) {
     result += keys[i] + '=' + encodeURIComponent(parameters[keys[i]]) + ((i < keys.length - 1) ? '&' : '');
   }
   return url + result;
-}
+};
 
 module.exports = object;
