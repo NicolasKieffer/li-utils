@@ -4,7 +4,8 @@
 'use strict';
 
 /* Module Require */
-var JSONSelect = require('JSONSelect'),
+var dateFormat = require('dateformat'),
+  JSONSelect = require('JSONSelect'),
   xm = require('xml-mapping'),
   mkdirp = require('mkdirp'),
   mustache = require('mustache'),
@@ -277,5 +278,18 @@ object.URL.addParameters = function(url, parameters) {
   }
   return url + result;
 };
+
+// Regroupe les fonctions liées aux dates
+object.dates = {};
+
+/**
+ * Renvoi la date actuelle au format souhaité
+ * @param {string} format Format de la date (par défaut 'dd-mm-yyyy')
+ * @return {string} Date au format souhaité
+ */
+object.dates.now = function(format) {
+  var arg = format || 'dd-mm-yyyy';
+  return dateFormat(new Date(Date.now()), arg);
+}
 
 module.exports = object;

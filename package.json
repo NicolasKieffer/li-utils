@@ -13,6 +13,7 @@
   "author": "istex",
   "license": "ISC",
   "dependencies": {
+    "dateformat": "^1.0.12",
     "JSONSelect": "^0.4.0",
     "xml-mapping": "^1.7.1",
     "async": "^2.1.4",
