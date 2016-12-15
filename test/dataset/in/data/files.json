@@ -1,4 +1,81 @@
 {
+  "createPath": [{
+    "label": "Devrait retourner un chemin correctement construit (non null)",
+    "arguments": {
+      "corpusPath": "/my/path/",
+      "id": "0000000000000000000000000000000000000000",
+      "type": "enrichments",
+      "label": "mymodule",
+      "extension": ".tei.xml"
+    },
+    "result": {
+      "not": true,
+      "equal": null
+    }
+  }, {
+    "label": "Devrait retourner null",
+    "arguments": {
+      "corpusPath": "/my/path/",
+      "type": "enrichments",
+      "label": "mymodule",
+      "extension": ".tei.xml"
+    },
+    "result": {
+      "equal": null
+    }
+  }],
+  "get": [{
+    "label": "Devrait trouver un fichier mods dans les metadata",
+    "container": "metadata",
+    "arguments": {
+      "options": {
+        "mime": "application/mods+xml"
+      }
+    },
+    "result": {
+      "not": true,
+      "equal": null
+    }
+  }, {
+    "label": "Ne devrait pas trouver un fichier mods dans les metadata",
+    "container": "metadata",
+    "arguments": {
+      "options": {
+        "mime": "application/mods+xml",
+        "original": true
+      }
+    },
+    "result": {
+      "equal": null
+    }
+  }, {
+    "label": "Devrait trouver un fichier mods dans les metadata (avec une RegExp)",
+    "regExp": ["mime"],
+    "container": "metadata",
+    "arguments": {
+      "options": {
+        "mime": "mods",
+        "original": false
+      }
+    },
+    "result": {
+      "not": true,
+      "equal": null
+    }
+  }, {
+    "label": "Ne devrait pas trouver un fichier mods dans les metadata (avec une RegExp)",
+    "regExp": ["mime"],
+    "container": "metadata",
+    "arguments": {
+      "options": {
+        "mime": "mods+xml",
+        "original": true
+      }
+    },
+    "result": {
+      "equal": null
+    }
+  }],
   "selectAll": [{
     "label": "Devrait trouver 3 images dans les annexes (avec une RegExp)",
     "regExp": ["mime"],
@@ -89,83 +166,6 @@
       "options": [{
         "mime": "text/plain"
       }]
-    },
-    "result": {
-      "equal": null
-    }
-  }],
-  "get": [{
-    "label": "Devrait trouver un fichier mods dans les metadata",
-    "container": "metadata",
-    "arguments": {
-      "options": {
-        "mime": "application/mods+xml"
-      }
-    },
-    "result": {
-      "not": true,
-      "equal": null
-    }
-  }, {
-    "label": "Ne devrait pas trouver un fichier mods dans les metadata",
-    "container": "metadata",
-    "arguments": {
-      "options": {
-        "mime": "application/mods+xml",
-        "original": true
-      }
-    },
-    "result": {
-      "equal": null
-    }
-  }, {
-    "label": "Devrait trouver un fichier mods dans les metadata (avec une RegExp)",
-    "regExp": ["mime"],
-    "container": "metadata",
-    "arguments": {
-      "options": {
-        "mime": "mods",
-        "original": false
-      }
-    },
-    "result": {
-      "not": true,
-      "equal": null
-    }
-  }, {
-    "label": "Ne devrait pas trouver un fichier mods dans les metadata (avec une RegExp)",
-    "regExp": ["mime"],
-    "container": "metadata",
-    "arguments": {
-      "options": {
-        "mime": "mods+xml",
-        "original": true
-      }
-    },
-    "result": {
-      "equal": null
-    }
-  }],
-  "createPath": [{
-    "label": "Devrait retourner un chemin correctement construit (non null)",
-    "arguments": {
-      "corpusPath": "/my/path/",
-      "id": "0000000000000000000000000000000000000000",
-      "type": "enrichments",
-      "label": "mymodule",
-      "extension": ".tei.xml"
-    },
-    "result": {
-      "not": true,
-      "equal": null
-    }
-  }, {
-    "label": "Devrait retourner null",
-    "arguments": {
-      "corpusPath": "/my/path/",
-      "type": "enrichments",
-      "label": "mymodule",
-      "extension": ".tei.xml"
     },
     "result": {
       "equal": null

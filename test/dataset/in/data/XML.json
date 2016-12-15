@@ -1,20 +1,20 @@
 {
   "load": [{
     "label": "Devrait parser un fichier xml",
-    "path": "./dataset/in/file.mods.xml",
+    "path": "./dataset/in/resources/file.mods.xml",
     "result": {
       "be": "object"
     }
   }, {
     "label": "Ne devrait pas parser de xml (fichier vide)",
-    "path": "./dataset/in/empty.mods.xml",
+    "path": "./dataset/in/resources/empty.mods.xml",
     "result": {
       "equal": null
     }
   }],
   "select": [{
     "label": "Devrait trouver l'identifiant ISSN dans le fichier xml",
-    "path": "./dataset/in/file.mods.xml",
+    "path": "./dataset/in/resources/file.mods.xml",
     "arguments": {
       "selector": ".type:val(\"ISSN\") ~ .$t"
     },
@@ -23,7 +23,7 @@
     }
   }, {
     "label": "Ne devrait pas trouver d'identifiant ISBN dans le fichier xml",
-    "path": "./dataset/in/file.mods.xml",
+    "path": "./dataset/in/resources/file.mods.xml",
     "arguments": {
       "selector": ".type:val(\"ISBN\") ~ .$t"
     },

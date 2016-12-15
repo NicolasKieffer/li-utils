@@ -1,5 +1,5 @@
 {
-  "load": [{
+  "require": [{
     "label": "Devrait charger toutes les ressources",
     "arguments": {
       "paths": {
@@ -7,7 +7,7 @@
       }
     },
     "result": {
-      "length": 1
+      "property": "myResource"
     }
   }]
 }

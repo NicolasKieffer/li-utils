@@ -10,12 +10,13 @@ var pkg = require('../package.json'),
 // Données de test
 var docObject = require('./dataset/in/docObject.sample.json'),
   dataset = {
-    "paths": require('./dataset/in/test.paths.json'),
-    "resources": require('./dataset/in/test.resources.json'),
-    "files": require('./dataset/in/test.files.json'),
-    "directories": require('./dataset/in/test.directories.json'),
-    "XML": require('./dataset/in/test.XML.json'),
-    "URL": require('./dataset/in/test.URL.json')
+    "paths": require('./dataset/in/data/paths.json'),
+    "resources": require('./dataset/in/data/resources.json'),
+    "files": require('./dataset/in/data/files.json'),
+    "enrichments": require('./dataset/in/data/enrichments.json'),
+    "directories": require('./dataset/in/data/directories.json'),
+    "XML": require('./dataset/in/data/XML.json'),
+    "URL": require('./dataset/in/data/URL.json')
   };
 
 // Mapping indiquant quelle fonction de test et quelles données utiliser pour chaque fonction
@@ -24,12 +25,17 @@ var wrapper = {
     "init": testOf_pathsInit
   },
   "resources": {
-    "load": testOf_resourcesLoad
+    "require": testOf_resourcesRequire
   },
   "files": {
-    "selectAll": testOf_fileRepresentation,
+    "createPath": null,
+    "get": testOf_fileRepresentation,
     "select": testOf_fileRepresentation,
-    "get": testOf_fileRepresentation
+    "selectAll": testOf_fileRepresentation
+  },
+  "enrichments": {
+    "save": testOf_enrichmentsSave,
+    "write": testOf_enrichmentsWrite
   },
   "directories": {
     "sync": null
@@ -48,11 +54,21 @@ var wrapper = {
  * - myObject.paths.
  *   - init()
  *
+ * - myObject.resources.
+ *   - require()
+ *
  * - myObject.files.
  *   - selectAll()
  *   - select()
  *   - get()
  *   - createPath()
+ *
+ * - myObject.enrichments.
+ *   - write()
+ *   - save()
+ *
+ * - myObject.directories.
+ *   - sync()
  *
  * - myObject.XML.
  *   - load()
@@ -80,21 +96,11 @@ function testOf_pathsInit(fn, item, cb) {
 
 /**
  * Fonction de test à appliquée pour :
- * - myObject.resources.laod()
+ * - myObject.resources.require()
  */
-function testOf_resourcesLoad(fn, item, cb) {
+function testOf_resourcesRequire(fn, item, cb) {
   var paths = myObject.paths.init(item.arguments.paths, __dirname);
-  var result = fn(paths);
-  return cb(Object.keys(result));
-}
-
-/**
- * Fonction de test à appliquée pour :
- * - myObject.XML.load()
- */
-function testOf_xmlLoad(fn, item, cb) {
-  var xmlStr = fs.readFileSync(path.join(__dirname, item.path), 'utf-8');
-  return cb(fn(xmlStr));
+  return cb(fn(paths));
 }
 
 /**
@@ -106,6 +112,36 @@ function testOf_xmlLoad(fn, item, cb) {
 function testOf_fileRepresentation(fn, item, cb) {
   if (item.regExp) setRegex(item.regExp, item.arguments.options);
   return cb(fn(docObject[item.container], item.arguments.options));
+}
+
+/**
+ * Fonction de test à appliquée pour :
+ * - myObject.enrichments.save()
+ */
+function testOf_enrichmentsSave(fn, item, cb) {
+  var before = (item.arguments.enrichments && item.arguments.enrichments[item.arguments.options.label]) ? item.arguments.enrichments[item.arguments.options.label].length : 0, // Nombre d'enrichissement avant
+    result = fn(item.arguments.enrichments, item.arguments.options),
+    after = result[item.arguments.options.label].length; // Nombre d'enrichissement aprés
+  cb(after - before);
+}
+
+/**
+ * Fonction de test à appliquée pour :
+ * - myObject.enrichments.write()
+ */
+function testOf_enrichmentsWrite(fn, item, cb) {
+  fn(item.arguments.options, function(err) {
+    cb(err);
+  });
+}
+
+/**
+ * Fonction de test à appliquée pour :
+ * - myObject.XML.load()
+ */
+function testOf_xmlLoad(fn, item, cb) {
+  var xmlStr = fs.readFileSync(path.join(__dirname, item.path), 'utf-8');
+  return cb(fn(xmlStr));
 }
 
 /**

@@ -1,0 +1,89 @@
+{
+  "save": [{
+    "label": "Devrait sauvegarder l'objet dans une nouvelle clé",
+    "arguments": {
+      "options": {
+        "enrichment": {
+          "foo": "bar"
+        },
+        "label": "li-utils"
+      },
+      "enrichments": {}
+    },
+    "result": {
+      "equal": 1
+    }
+  }, {
+    "label": "Devrait sauvegarder l'objet dans une clé existante",
+    "arguments": {
+      "options": {
+        "enrichment": {
+          "foo": "bar"
+        },
+        "label": "li-utils"
+      },
+      "enrichments": {
+        "li-utils": [{
+          "foo": "foo"
+        }]
+      }
+    },
+    "result": {
+      "equal": 1
+    }
+  }, {
+    "label": "Ne devrait rien faire (existe déjà)",
+    "arguments": {
+      "options": {
+        "enrichment": {
+          "foo": "bar"
+        },
+        "label": "li-utils"
+      },
+      "enrichments": {
+        "li-utils": [{
+          "foo": "bar"
+        }]
+      }
+    },
+    "result": {
+      "equal": 0
+    }
+  }],
+  "write": [{
+    "label": "Devrait écrire correctement le fichier",
+    "arguments": {
+      "options": {
+        "template": "./test/dataset/in/resources/file.tei.tpl",
+        "data": {
+          "value": "Hello World!"
+        },
+        "output": {
+          "directory": "./test/dataset/out/",
+          "filename": "file.tei"
+        }
+      }
+    },
+    "result": {
+      "not": true,
+      "equal": null
+    }
+  }, {
+    "label": "Devrait rencontrer une erreur de Lecture/Écriture",
+    "arguments": {
+      "options": {
+        "template": "./test/dataset/in/resources/incorrect.tei.tpl",
+        "data": {
+          "value": "Hello World!"
+        },
+        "output": {
+          "directory": "./test/dataset/out/",
+          "filename": "file.tei"
+        }
+      }
+    },
+    "result": {
+      "equal": null
+    }
+  }]
+}
