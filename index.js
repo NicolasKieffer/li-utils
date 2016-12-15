@@ -13,7 +13,6 @@ var JSONSelect = require('JSONSelect'),
 
 var object = {};
 
-
 // Regroupe les fonctions liées aux chemins
 object.paths = {};
 
@@ -29,6 +28,22 @@ object.paths.init = function(paths, root) {
     if (paths.hasOwnProperty(k) && typeof paths[k] !== 'function') {
       result[k] = path.join(root, paths[k]);
     }
+  }
+  return result;
+};
+
+// Regroupe les fonctions liées aux ressources
+object.resources = {};
+
+/**
+ * Charge toutes les ressources d'un module R&D
+ * @param {Object} paths Liste des chemins sous forme d'objet JSON (clé => valeur)
+ * @return {Object} L'objet contenant toutes les ressources
+ */
+object.resources.load = function(paths) {
+  var result = {};
+  for (var k in paths) {
+    result[k] = require(paths[k]);
   }
   return result;
 };

@@ -11,6 +11,7 @@ var pkg = require('../package.json'),
 var docObject = require('./dataset/in/docObject.sample.json'),
   dataset = {
     "paths": require('./dataset/in/test.paths.json'),
+    "resources": require('./dataset/in/test.resources.json'),
     "files": require('./dataset/in/test.files.json'),
     "directories": require('./dataset/in/test.directories.json'),
     "XML": require('./dataset/in/test.XML.json'),
@@ -21,6 +22,9 @@ var docObject = require('./dataset/in/docObject.sample.json'),
 var wrapper = {
   "paths": {
     "init": testOf_pathsInit
+  },
+  "resources": {
+    "load": testOf_resourcesLoad
   },
   "files": {
     "selectAll": testOf_fileRepresentation,
@@ -72,6 +76,16 @@ TU.start({
 function testOf_pathsInit(fn, item, cb) {
   var result = fn(item.arguments.paths, item.arguments.root);
   return cb(result.test);
+}
+
+/**
+ * Fonction de test à appliquée pour :
+ * - myObject.resources.laod()
+ */
+function testOf_resourcesLoad(fn, item, cb) {
+  var paths = myObject.paths.init(item.arguments.paths, __dirname);
+  var result = fn(paths);
+  return cb(Object.keys(result));
 }
 
 /**

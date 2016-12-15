@@ -1,0 +1,13 @@
+{
+  "load": [{
+    "label": "Devrait charger toutes les ressources",
+    "arguments": {
+      "paths": {
+        "myResource": "./dataset/in/resources/myResource.json"
+      }
+    },
+    "result": {
+      "length": 1
+    }
+  }]
+}
