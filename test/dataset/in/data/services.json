@@ -1,0 +1,90 @@
+{
+  "post": [{
+    "label": "Devrait fonctionner correctement",
+    "arguments": {
+      "options": {
+        "filename": "./test/dataset/in/resources/SUCCESS.pdf",
+        "headers": {
+          "Accept": "application/xml"
+        },
+        "url": "http://vi-istex-gkn.intra.inist.fr:8070/processKeyTermArticlePDF"
+      }
+    },
+    "result": {
+      "equal": null
+    }
+  }, {
+    "label": "Devrait renvoyer une erreur ENOENT",
+    "arguments": {
+      "options": {
+        "filename": "./test/dataset/in/resources/ERROR_ENOENT.pdf",
+        "headers": {
+          "Accept": "application/xml"
+        },
+        "url": "http://vi-istex-gkn.intra.inist.fr:8070/processKeyTermArticlePDF"
+      }
+    },
+    "result": {
+      "not": true,
+      "equal": null
+    }
+  }, {
+    "label": "Devrait renvoyer une erreur TIMEOUT",
+    "arguments": {
+      "options": {
+        "filename": "./test/dataset/in/resources/SUCCESS.pdf",
+        "headers": {
+          "Accept": "application/xml"
+        },
+        "url": "http://vi-istex-gkn.intra.inist.fr:8060/processKeyTermArticlePDF"
+      }
+    },
+    "result": {
+      "not": true,
+      "equal": null
+    }
+  }],
+  "transformXML": [{
+    "label": "Devrait correctement lancer la transformation du fichier XML",
+    "arguments": {
+      "options": {
+        "output": "./test/dataset/out/keyterm.transformed.xml",
+        "documentId": "0000000000000000000000000000000000000000",
+        "runId": "1",
+        "xsltFile": "./test/dataset/in/resources/transform.xslt",
+        "xmlFile": "./test/dataset/in/resources/keyterm.xml"
+      }
+    },
+    "result": {
+      "equal": 0
+    }
+  }, {
+    "label": "Ne devrait pas trouver le fichier XML",
+    "arguments": {
+      "options": {
+        "output": "./test/dataset/out/keyterm.transformed.xml",
+        "documentId": "0000000000000000000000000000000000000000",
+        "runId": "1",
+        "xsltFile": "./test/dataset/in/resources/transform.xslt",
+        "xmlFile": "./test/dataset/in/resources/ERROR_ENOENT.xml"
+      }
+    },
+    "result": {
+      "equal": 6
+    }
+  }, {
+    "label": "Ne devrait pas trouver le fichier XSLT",
+    "arguments": {
+      "options": {
+        "output": "./test/dataset/out/keyterm.transformed.xml",
+        "documentId": "0000000000000000000000000000000000000000",
+        "runId": "1",
+        "xsltFile": "./test/dataset/in/resources/ERROR_ENOENT.xslt",
+        "xmlFile": "./test/dataset/in/resources/keyterm.xml"
+      }
+    },
+    "result": {
+      "equal": 4
+    }
+  }]
+}

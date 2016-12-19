@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<standOff>
+    <teiHeader>
+        <fileDesc>
+            <titleStmt>
+                <title>Key phrase, key concept and category extraction</title>
+                <respStmt/>
+            </titleStmt>
+            <publicationStmt>
+                <availability status="unknown"></availability>
+            </publicationStmt>
+            <sourceDesc/>
+            <encodingDesc>
+                <appInfo>
+                    <application ident="grobid-keyterm" version="0.1" when="2016-12-19T08:58+0000">
+                        <label>grobid-keyterm</label>
+                    </application>
+                </appInfo>
+                <classDecl>
+                    <taxonomy xml:id="wikipedia-en-categories">
+                        <gloss>The Free Encyclopedia 
+                            <ref target="https://en.wikipedia.org/wiki/Portal:Contents/Categories"/>
+                        </gloss>
+                    </taxonomy>
+                    <taxonomy xml:id="wikipedia-en">
+                        <gloss>The Free Encyclopedia 
+                            <ref target="https://en.wikipedia.org"/>
+                        </gloss>
+                    </taxonomy>
+                </classDecl>
+            </encodingDesc>
+        </fileDesc>
+        <profileDesc/>
+        <revisionDesc/>
+    </teiHeader>
+    <listAnnotation type="keyphrase">
+        <annotationBlock
+            xmlns="https//www.tei-c.org/ns/1.0" inst="#text">
+            <keywords scheme="#wikipedia-en">
+                <term cert="0,268911">Crocodylus intermedius</term>
+                <term cert="0,091393">Orinoco crocodile</term>
+                <term cert="0,038297">crocodile populations</term>
+                <term cert="0,033538">las poblaciones</term>
+                <term cert="0,027760">crocodile population</term>
+                <term cert="0,017519">population recovery</term>
+                <term cert="0,017118">Caiman crocodilus</term>
+                <term cert="0,010953">crocodile Crocodylus</term>
+                <term cert="0,010826">Orinoco</term>
+                <term cert="0,009875">crocodiles</term>
+                <term cert="0,009470">spectacled caiman</term>
+                <term cert="0,008984">populations remain</term>
+                <term cert="0,007391">isolated areas</term>
+                <term cert="0,006969">Orinoco crocodiles</term>
+                <term cert="0,006780">hatchling crocodiles</term>
+                <term cert="0,006667">crocodile</term>
+                <term cert="0,006353">en el</term>
+                <term cert="0,005986">poblaciones</term>
+                <term cert="0,005715">population</term>
+                <term cert="0,005564">Caiman</term>
+                <term cert="0,005490">Venezuela</term>
+                <term cert="0,005327">Orinoco crocodile Crocodylus</term>
+                <term cert="0,005316">nocturnal spotlight</term>
+                <term cert="0,005222">las</term>
+                <term cert="0,004843">populations</term>
+                <term cert="0,004809">River</term>
+                <term cert="0,004316">Tucupido</term>
+                <term cert="0,004253">counts reveal</term>
+                <term cert="0,004253">spotlight counts</term>
+                <term cert="0,004204">Crocodylus</term>
+                <term cert="0,004037">intermedius</term>
+                <term cert="0,003876">Apure</term>
+                <term cert="0,003777">habitat</term>
+                <term cert="0,003767">se encuentran</term>
+                <term cert="0,003760">del</term>
+                <term cert="0,003553">spotlight counts reveal</term>
+                <term cert="0,003553">nocturnal spotlight counts</term>
+                <term cert="0,003544">severely depleted</term>
+                <term cert="0,003485">rivers</term>
+                <term cert="0,003485">Capanaparo</term>
+                <term cert="0,003450">recovery</term>
+                <term cert="0,003325">llanos</term>
+                <term cert="0,003217">rio</term>
+                <term cert="0,003126">los</term>
+                <term cert="0,003107">taken place</term>
+                <term cert="0,003038">reduced hunting</term>
+            </keywords>
+        </annotationBlock>
+    </listAnnotation>
+    <listAnnotation type="keyconcept">
+        <annotationBlock
+            xmlns="https//www.tei-c.org/ns/1.0" inst="#text">
+            <keywords scheme="#wikipedia-en">
+                <term key="curid:3176247" cert="0,988974">Orinoco crocodile</term>
+                <term key="curid:15494078" cert="0,052492">Spectacled caiman</term>
+                <term key="curid:87260" cert="0,028969">Orinoco</term>
+                <term key="curid:37882" cert="0,025433">Crocodile</term>
+                <term key="curid:32374" cert="0,009123">Venezuela</term>
+                <term key="curid:18382251" cert="0,008988">Caimaninae</term>
+                <term key="curid:1596317" cert="0,002750">Habitat</term>
+                <term key="curid:22949" cert="0,002207">Population</term>
+                <term key="curid:18842395" cert="0,001662">River</term>
+                <term key="curid:2025062" cert="0,001639">Crocodylus</term>
+                <term key="curid:1289971" cert="0,001069">Llanos</term>
+                <term key="curid:1796686" cert="0,001043">Apure River</term>
+                <term key="curid:261966" cert="0,000148">Rio (windowing system)</term>
+            </keywords>
+        </annotationBlock>
+    </listAnnotation>
+    <listAnnotation type="keycategories">
+        <annotationBlock
+            xmlns="https//www.tei-c.org/ns/1.0" inst="#text">
+            <keywords scheme="#wikipedia-en-categories">
+                <term key="curid:30006623" cert="0,217114">Crocodilians</term>
+                <term key="curid:6927138" cert="0,216263">Reptiles of South America</term>
+                <term key="curid:17456674" cert="0,202832">Crocodylidae</term>
+                <term key="curid:20603129" cert="0,193115">Megafauna of South America</term>
+                <term key="curid:24711929" cert="0,005802">International rivers of South America</term>
+                <term key="curid:713034" cert="0,002943">South American countries</term>
+                <term key="curid:28799863" cert="0,002024">Habitat (ecology) terminology</term>
+            </keywords>
+        </annotationBlock>
+    </listAnnotation>
+</standOff>

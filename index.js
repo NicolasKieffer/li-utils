@@ -9,9 +9,11 @@ var dateFormat = require('dateformat'),
   xm = require('xml-mapping'),
   mkdirp = require('mkdirp'),
   mustache = require('mustache'),
+  request = require('request'),
   fs = require('fs'),
   path = require('path'),
-  extend = require('util')._extend;
+  extend = require('util')._extend,
+  child_process = require('child_process');
 
 /* Constantes */
 var JSON_EXTENSION = new RegExp(/(.json)$/g);
@@ -231,7 +233,7 @@ object.directories.sync = function(path) {
     // Création du répertoire
     mkdirp.sync(path);
   }
-}
+};
 
 // Regroupe les fonctions liées aux traitement des XML
 object.XML = {};
@@ -290,6 +292,127 @@ object.dates = {};
 object.dates.now = function(format) {
   var arg = format || 'dd-mm-yyyy';
   return dateFormat(new Date(Date.now()), arg);
-}
+};
+
+// Regroupe les fonctions liées aux services
+object.services = {};
+
+/**
+ * Effectue une requête HTTP (méthode POST) sur un service
+ * @param {object} options Objet comportant toutes les informations nécessaire à la requête :
+ *  - {string} filename Nom du fichier
+ *  - {object} headers Headers de la requête
+ *  - {string} url Url d'accès au service 
+ * @param {function} cb Callback appelée à la fin du traitement, avec comme paramètre disponible :
+ *  - {Error} err Erreur de Lecture/Écriture
+ *  - {object} res Résultat de la réponse, sous la forme :
+ *    - {object} httpResponse Réponse HTTP
+ *    - {string} body Body de la réponse
+ * @return {undefined} undefined
+ */
+object.services.post = function(options, cb) {
+  var _err = null,
+    _res = null;
+  // Vérification de l'existence du fichier à envoyer
+  fs.stat(options.filename, function(err, stats) {
+    // Lecture impossible
+    if (err) {
+      _err = new Error(err);
+      return cb(_err, _res);
+    }
+    // Création du form data
+    var formData = {
+      file: fs.createReadStream(options.filename)
+    };
+    // Requête POST sur le service
+    request.post({
+      headers: options.headers,
+      url: options.url,
+      formData: formData
+    }, function(err, httpResponse, body) {
+      // Erreur
+      if (err) {
+        _err = new Error(err);
+        return cb(_err, _res);
+      }
+      // Retourne le résultat de la requête
+      return cb(_err, {
+        "httpResponse": httpResponse,
+        "body": body
+      });
+    });
+  });
+};
+
+/**
+ * Applique une feuille xslt sur un document XML (provenant d'un service)
+ * @param {object} options Objet comportant toutes les informations nécessaire à la création du chemin :
+ *  - {string} output Chemin du Tempalte
+ *  - {string} documentId Données à insérer dans le Template
+ *  - {string} runId Données sur l'Output (voir : object.files.createPath)
+ *  - {string} xsltFile Données sur l'Output (voir : object.files.createPath)
+ *  - {string} xmlFile Données sur l'Output (voir : object.files.createPath)
+ * @param {function} cb Callback appelée à la fin du traitement, avec comme paramètre disponible :
+ *  - {Error} err Erreur de Lecture/Écriture
+ *  - {Object} res Résultat de l'opération, sous la forme 
+ *    - {object} logs Logs de stderr (array) et stdout (array)
+ *    - {array} output Tableau contenant les différents logs dans l'ordre d'apparition
+ *    - {integer} code Code de retour du process
+ * @return {undefined} Return undefined
+ */
+object.services.transformXML = function(options, cb) {
+  // Spawn du process qui effectura la transformation XSLT
+  var xsltproc = child_process.spawn('xsltproc', [
+      '--output',
+      options.output,
+      '--stringparam',
+      'documentId',
+      options.documentId,
+      '--stringparam',
+      'runId',
+      options.runId,
+      options.xsltFile,
+      options.xmlFile
+    ]),
+    _err = null,
+    logs = {
+      'stderr': [],
+      'stdout': []
+    },
+    output = [];
+
+  // Write stdout in Logs
+  xsltproc.stdout.on('data', function(data) {
+    var str = data.toString();
+    logs.stdout.push(str);
+    return output.push('[stdout] ' + str);
+  });
+
+  // Write stderr in Logs
+  xsltproc.stderr.on('data', function(data) {
+    var str = data.toString();
+    logs.stderr.push(str);
+    return output.push('[stderr] ' + data.toString());
+  });
+
+  // On error
+  xsltproc.on('error', function(err) {
+    var res = {
+      'logs': logs,
+      'output': output
+    };
+    return cb(err, res);
+  });
+
+  // On close
+  xsltproc.on('close', function(code) {
+    var res = {
+      'logs': logs,
+      'output': output,
+      'code': code
+    };
+    return cb(null, res);
+  });
+};
 
 module.exports = object;

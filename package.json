@@ -20,6 +20,7 @@
     "mkdirp": "^0.5.1",
     "mocha": "^3.2.0",
     "mustache": "^2.2.1",
+    "request": "^2.74.0",
     "rd-tu": "git+ssh://vsistex.intra.inist.fr:22222/istex/rd-tu.git"
   }
 }

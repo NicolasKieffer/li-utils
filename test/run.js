@@ -16,7 +16,8 @@ var docObject = require('./dataset/in/docObject.sample.json'),
     "enrichments": require('./dataset/in/data/enrichments.json'),
     "directories": require('./dataset/in/data/directories.json'),
     "XML": require('./dataset/in/data/XML.json'),
-    "URL": require('./dataset/in/data/URL.json')
+    "URL": require('./dataset/in/data/URL.json'),
+    "services": require('./dataset/in/data/services.json')
   };
 
 // Mapping indiquant quelle fonction de test et quelles données utiliser pour chaque fonction
@@ -42,10 +43,14 @@ var wrapper = {
   },
   "XML": {
     "load": testOf_xmlLoad,
-    "select": testOf_xmlSelect
+    "select": testOf_xmlSelect,
   },
   "URL": {
     "addParameters": testOf_urlAddParameters
+  },
+  "services": {
+    "post": testOf_servicesPost,
+    "transformXML": testOf_servicesTransformXML
   }
 };
 
@@ -122,7 +127,7 @@ function testOf_enrichmentsSave(fn, item, cb) {
   var before = (item.arguments.enrichments && item.arguments.enrichments[item.arguments.options.label]) ? item.arguments.enrichments[item.arguments.options.label].length : 0, // Nombre d'enrichissement avant
     result = fn(item.arguments.enrichments, item.arguments.options),
     after = result[item.arguments.options.label].length; // Nombre d'enrichissement aprés
-  cb(after - before);
+  return cb(after - before);
 }
 
 /**
@@ -130,8 +135,8 @@ function testOf_enrichmentsSave(fn, item, cb) {
  * - myObject.enrichments.write()
  */
 function testOf_enrichmentsWrite(fn, item, cb) {
-  fn(item.arguments.options, function(err) {
-    cb(err);
+  return fn(item.arguments.options, function(err) {
+    return cb(err);
   });
 }
 
@@ -160,6 +165,26 @@ function testOf_xmlSelect(fn, item, cb) {
  */
 function testOf_urlAddParameters(fn, item, cb) {
   return cb(fn(item.arguments.url, item.arguments.parameters));
+}
+
+/**
+ * Fonction de test à appliquée pour :
+ * - myObject.services.post()
+ */
+function testOf_servicesPost(fn, item, cb) {
+  return fn(item.arguments.options, function(err, res) {
+    return cb(err);
+  });
+}
+
+/**
+ * Fonction de test à appliquée pour :
+ * - myObject.services.transformXML()
+ */
+function testOf_servicesTransformXML(fn, item, cb) {
+  return fn(item.arguments.options, function(err, res) {
+    return cb(res.code);
+  });
 }
 
 // Set une regex pour chaque clée demandée
