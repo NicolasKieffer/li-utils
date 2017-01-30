@@ -13,14 +13,13 @@
   "author": "istex",
   "license": "ISC",
   "dependencies": {
-    "dateformat": "^1.0.12",
-    "JSONSelect": "^0.4.0",
-    "xml-mapping": "^1.7.1",
     "async": "^2.1.4",
+    "cheerio": "^0.22.0",
+    "dateformat": "^1.0.12",
     "mkdirp": "^0.5.1",
     "mocha": "^3.2.0",
     "mustache": "^2.2.1",
-    "request": "^2.74.0",
-    "rd-tu": "git+ssh://vsistex.intra.inist.fr:22222/istex/rd-tu.git"
+    "rd-tu": "git+ssh://vsistex.intra.inist.fr:22222/istex/rd-tu.git",
+    "request": "^2.74.0"
   }
 }

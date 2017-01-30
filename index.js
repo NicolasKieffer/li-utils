@@ -5,8 +5,7 @@
 
 /* Module Require */
 var dateFormat = require('dateformat'),
-  JSONSelect = require('JSONSelect'),
-  xm = require('xml-mapping'),
+  cheerio = require('cheerio'),
   mkdirp = require('mkdirp'),
   mustache = require('mustache'),
   request = require('request'),
@@ -244,22 +243,8 @@ object.XML = {};
  * @return {object} Objet JSON représentant le document XML ou null
  */
 object.XML.load = function(xmlStr) {
-  var result = xm.load(xmlStr);
+  var result = cheerio.load(xmlStr);
   return (Object.keys(result).length > 0) ? result : null;
-};
-
-/**
- * Retourne les élement présent dans un xml "JSONifié" correspondant au sélecteur indiqué
- * @param {string} selector Sélecteur
- * @param {object} jsonObject Objet JSON représentant un document xml
- * @return {array} Array contenant les éléments sélectionnés
- */
-object.XML.select = function(selector, jsonObject) {
-  try {
-    return JSONSelect.match(selector, jsonObject);
-  } catch (e) {
-    console.log(e);
-  }
 };
 
 // Regroupe les fonctions liées aux traitement des URL

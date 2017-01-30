@@ -42,8 +42,7 @@ var wrapper = {
     "sync": null
   },
   "XML": {
-    "load": testOf_xmlLoad,
-    "select": testOf_xmlSelect,
+    "load": testOf_xmlLoad
   },
   "URL": {
     "addParameters": testOf_urlAddParameters
@@ -146,17 +145,7 @@ function testOf_enrichmentsWrite(fn, item, cb) {
  */
 function testOf_xmlLoad(fn, item, cb) {
   var xmlStr = fs.readFileSync(path.join(__dirname, item.path), 'utf-8');
-  return cb(fn(xmlStr));
-}
-
-/**
- * Fonction de test à appliquée pour :
- * - myObject.XML.select()
- */
-function testOf_xmlSelect(fn, item, cb) {
-  var xmlStr = fs.readFileSync(path.join(__dirname, item.path), 'utf-8');
-  var jsonObject = myObject.XML.load(xmlStr);
-  return cb(fn(item.arguments.selector, jsonObject)[0]);
+  return cb(fn(xmlStr).html().length);
 }
 
 /**
