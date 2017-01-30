@@ -243,7 +243,9 @@ object.XML = {};
  * @return {object} Objet JSON représentant le document XML ou null
  */
 object.XML.load = function(xmlStr) {
-  var result = cheerio.load(xmlStr);
+  var result = cheerio.load(xmlStr, {
+    xmlMode: true
+  });
   return (Object.keys(result).length > 0) ? result : null;
 };
 
