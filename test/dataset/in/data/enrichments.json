@@ -59,7 +59,7 @@
           "value": "Hello World!"
         },
         "output": {
-          "directory": "./test/dataset/out/",
+          "directory": "./test/dataset/out/mkdirp/",
           "filename": "file.tei"
         }
       }
@@ -77,7 +77,7 @@
           "value": "Hello World!"
         },
         "output": {
-          "directory": "./test/dataset/out/",
+          "directory": "./test/dataset/out/mkdirp/",
           "filename": "file.tei"
         }
       }

@@ -14,10 +14,9 @@ var docObject = require('./dataset/in/docObject.sample.json'),
     "resources": require('./dataset/in/data/resources.json'),
     "files": require('./dataset/in/data/files.json'),
     "enrichments": require('./dataset/in/data/enrichments.json'),
-    "directories": require('./dataset/in/data/directories.json'),
     "XML": require('./dataset/in/data/XML.json'),
     "URL": require('./dataset/in/data/URL.json'),
-    "services": require('./dataset/in/data/services.json')
+    // "services": require('./dataset/in/data/services.json')
   };
 
 // Mapping indiquant quelle fonction de test et quelles données utiliser pour chaque fonction
@@ -38,19 +37,16 @@ var wrapper = {
     "save": testOf_enrichmentsSave,
     "write": testOf_enrichmentsWrite
   },
-  "directories": {
-    "sync": null
-  },
   "XML": {
     "load": testOf_xmlLoad
   },
   "URL": {
     "addParameters": testOf_urlAddParameters
   },
-  "services": {
-    "post": testOf_servicesPost,
-    "transformXML": testOf_servicesTransformXML
-  }
+  // "services": {
+  //   "post": testOf_servicesPost,
+  //   "transformXML": testOf_servicesTransformXML
+  // }
 };
 
 /**
@@ -70,9 +66,6 @@ var wrapper = {
  * - myObject.enrichments.
  *   - write()
  *   - save()
- *
- * - myObject.directories.
- *   - sync()
  *
  * - myObject.XML.
  *   - load()

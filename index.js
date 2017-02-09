@@ -207,31 +207,18 @@ object.enrichments.write = function(options, cb) {
     // Lecture impossible
     if (err) return cb(err);
     // Si le répertoire n'existe pas
-    object.directories.sync(options.output.directory);
-    // Construction du fragment depuis le template et du nom de fichier
-    var fragment = mustache.render(tpl, options.data),
-      filename = path.join(options.output.directory, options.output.filename);
-    // Écriture du fragment de TEI
-    fs.writeFile(filename, fragment, 'utf8', function(err) {
-      return cb(err);
+    mkdirp(options.output.directory, function(err, made) {
+      // Erreur I/O
+      if (err) return cb(err);
+      // Construction du fragment depuis le template et du nom de fichier
+      var fragment = mustache.render(tpl, options.data),
+        filename = path.join(options.output.directory, options.output.filename);
+      // Écriture du fragment de TEI
+      fs.writeFile(filename, fragment, 'utf8', function(err) {
+        return cb(err);
+      });
     });
   });
-};
-
-// Regroupe les fonctions liées aux répertoires dans la chaine LoadIstex
-object.directories = {}
-
-/**
- * Créer un répertoire s'il n'existe pas déjà
- * @param {string} path Chemin du répertoire à créer
- * @return {undefined} Return undefined
- */
-object.directories.sync = function(path) {
-  // Si le répertoire n'existe pas
-  if (!fs.existsSync(path)) {
-    // Création du répertoire
-    mkdirp.sync(path);
-  }
 };
 
 // Regroupe les fonctions liées aux traitement des XML
