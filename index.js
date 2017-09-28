@@ -151,11 +151,33 @@ object.files.get = function(files, criteria) {
  *  - {string} extension Extension du document (ex : .tei.xml)
  * @return {object} fileInfos sous la forme : { filemane, directory }
  */
-object.files.createPath = function(options) {
+object.files.createIstexPath = function(options) {
   var result = null;
   if (options && options.id) {
     result = {
       'directory': path.join(options.corpusPath, options.id[0], options.id[1], options.id[2], options.id, options.type, options.label),
+      'filename': options.id + ((options.label) ? '.' : '') + options.label + options.extension
+    };
+  }
+  return result;
+};
+
+/**
+ * Retourne les infos nécessaires pour la lecture ou la création d'un fichier
+ *  - directory => [corpusPath]/[id]/
+ *  - filename => [id].([label].)[extension]
+ * @param {object} options Objet comportant toutes les informations nécessaire à la création du chemin :
+ *  - {string} corpusPath Chemin du corpusOutput
+ *  - {string} id Id Istex du document
+ *  - {string} label Label du module
+ *  - {string} extension Extension du document (ex : .tei.xml)
+ * @return {object} fileInfos sous la forme : { filemane, directory }
+ */
+object.files.createPath = function(options) {
+  var result = null;
+  if (options && options.id) {
+    result = {
+      'directory': path.join(options.corpusPath, options.id),
       'filename': options.id + ((options.label) ? '.' : '') + options.label + options.extension
     };
   }

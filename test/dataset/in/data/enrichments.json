@@ -65,7 +65,6 @@
       }
     },
     "result": {
-      "not": true,
       "equal": null
     }
   }, {
@@ -83,6 +82,7 @@
       }
     },
     "result": {
+      "not": true,
       "equal": null
     }
   }]

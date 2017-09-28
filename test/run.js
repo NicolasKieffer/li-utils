@@ -28,6 +28,7 @@ var wrapper = {
     "require": testOf_resourcesRequire
   },
   "files": {
+    "createIstexPath": null,
     "createPath": null,
     "get": testOf_fileRepresentation,
     "select": testOf_fileRepresentation,
