@@ -3,7 +3,7 @@
 
 var pkg = require('../package.json'),
   myObject = require('../index.js'),
-  TU = require('rd-tu'),
+  TU = require('auto-tu'),
   fs = require('fs'),
   path = require('path');
 
