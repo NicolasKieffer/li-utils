@@ -1,5 +1,5 @@
 {
-  "name": "li-utils",
+  "name": "worker-utils",
   "version": "1.0.0",
   "description": "Regroupement des fonctions utiles à tous les modules de la chaîne LoadIstex",
   "main": "index.js",
@@ -8,9 +8,9 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://git.istex.fr/git/istex/li-utils.git"
+    "url": "https://github.com/NicolasKieffer/worker-utils.git"
   },
-  "author": "istex",
+  "author": "NicolasKieffer",
   "license": "ISC",
   "dependencies": {
     "async": "^2.1.4",
@@ -19,7 +19,7 @@
     "mkdirp": "^0.5.1",
     "mocha": "^3.2.0",
     "mustache": "^2.2.1",
-    "rd-tu": "git+ssh://vsistex.intra.inist.fr:22222/istex/rd-tu.git",
+    "auto-tu": "https://github.com/NicolasKieffer/auto-tu.git",
     "request": "^2.74.0"
   }
 }
