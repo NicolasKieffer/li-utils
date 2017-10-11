@@ -52,9 +52,9 @@
   }],
   "write": [{
     "label": "Devrait écrire correctement le fichier",
+    "template": "./test/dataset/in/resources/file.tei.tpl",
     "arguments": {
       "options": {
-        "template": "./test/dataset/in/resources/file.tei.tpl",
         "data": {
           "value": "Hello World!"
         },
@@ -65,25 +65,24 @@
       }
     },
     "result": {
-      "equal": null
+      "equal": "Hello World!"
     }
   }, {
-    "label": "Devrait rencontrer une erreur de Lecture/Écriture",
+    "label": "Devrait écrire un fichier vide (invalide tpl)",
+    "template": "./test/dataset/in/resources/incorrect.tei.tpl",
     "arguments": {
       "options": {
-        "template": "./test/dataset/in/resources/incorrect.tei.tpl",
         "data": {
           "value": "Hello World!"
         },
         "output": {
           "directory": "./test/dataset/out/mkdirp/",
-          "filename": "file.tei"
+          "filename": "incorrect.tei"
         }
       }
     },
     "result": {
-      "not": true,
-      "equal": null
+      "equal": ""
     }
   }]
 }

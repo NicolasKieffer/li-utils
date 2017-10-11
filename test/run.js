@@ -97,8 +97,16 @@ function testOf_enrichmentsSave(fn, item, cb) {
  * - myObject.enrichments.write()
  */
 function testOf_enrichmentsWrite(fn, item, cb) {
-  return fn(item.arguments.options, function(err) {
-    return cb(err);
+  // Récupération du fragment de TEI
+  fs.readFile(item.template, 'utf-8', function(err, tpl) {
+    // Lecture impossible
+    if (err) tpl = '';
+    item.arguments.options.template = tpl;
+    console.log(item.arguments.options)
+    return fn(item.arguments.options, function(err, res) {
+    console.log(err, res)
+      return cb(res);
+    });
   });
 }
 

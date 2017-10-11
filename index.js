@@ -177,29 +177,26 @@ object.enrichments.save = function(enrichments, options) {
 /**
  * Écrit un fichier de TEI
  * @param {Object} options Objet comportant toutes les informations nécessaire à la création du chemin :
- *  - {String} template Chemin du Tempalte
+ *  - {String} template Tempalte à utiliser
  *  - {Object} data Données à insérer dans le Template
  *  - {Object} output Données sur l'Output (voir : object.files.createPath)
  * @param {function} cb Callback appelée à la fin du traitement, avec comme paramètre disponible :
  *  - {Error} err Erreur de Lecture/Écriture
+ *  - {String} res Data écrites dans le fichier
  * @return {undefined} Return undefined
  */
 object.enrichments.write = function(options, cb) {
-  // Récupération du fragment de TEI
-  fs.readFile(options.template, 'utf-8', function(err, tpl) {
-    // Lecture impossible
+  // Si le répertoire n'existe pas
+  mkdirp(options.output.directory, function(err, made) {
+    // Erreur I/O
     if (err) return cb(err);
-    // Si le répertoire n'existe pas
-    mkdirp(options.output.directory, function(err, made) {
-      // Erreur I/O
-      if (err) return cb(err);
-      // Construction du fragment depuis le template et du nom de fichier
-      let fragment = mustache.render(tpl, options.data),
-        filename = path.join(options.output.directory, options.output.filename);
-      // Écriture du fragment de TEI
-      fs.writeFile(filename, fragment, 'utf8', function(err) {
-        return cb(err);
-      });
+    // Construction du fragment depuis le template et du nom de fichier
+    let fragment = mustache.render(options.template, options.data),
+      filename = path.join(options.output.directory, options.output.filename);
+    // Écriture du fragment de TEI
+    fs.writeFile(filename, fragment, 'utf8', function(err) {
+      if (err) fragment = null;
+      return cb(err, fragment);
     });
   });
 };
