@@ -102,9 +102,7 @@ function testOf_enrichmentsWrite(fn, item, cb) {
     // Lecture impossible
     if (err) tpl = '';
     item.arguments.options.template = tpl;
-    console.log(item.arguments.options)
     return fn(item.arguments.options, function(err, res) {
-    console.log(err, res)
       return cb(res);
     });
   });
