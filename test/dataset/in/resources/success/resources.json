@@ -1,0 +1,9 @@
+{
+  "string": "bar",
+  "object": {
+    "foo": {
+      "bar": 0
+    }
+  },
+  "json": "./test.json"
+}

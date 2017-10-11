@@ -10,8 +10,6 @@ var pkg = require('../package.json'),
 // Données de test
 var docObject = require('./dataset/in/docObject.sample.json'),
   dataset = {
-    "paths": require('./dataset/in/data/paths.json'),
-    "resources": require('./dataset/in/data/resources.json'),
     "files": require('./dataset/in/data/files.json'),
     "enrichments": require('./dataset/in/data/enrichments.json'),
     "XML": require('./dataset/in/data/XML.json'),
@@ -21,12 +19,6 @@ var docObject = require('./dataset/in/docObject.sample.json'),
 
 // Mapping indiquant quelle fonction de test et quelles données utiliser pour chaque fonction
 var wrapper = {
-  "paths": {
-    "init": testOf_pathsInit
-  },
-  "resources": {
-    "require": testOf_resourcesRequire
-  },
   "files": {
     "createIstexPath": null,
     "createPath": null,
@@ -52,11 +44,6 @@ var wrapper = {
 
 /**
  * Test de chaques fonctions de :
- * - myObject.paths.
- *   - init()
- *
- * - myObject.resources.
- *   - require()
  *
  * - myObject.files.
  *   - selectAll()
@@ -82,24 +69,6 @@ TU.start({
   dataset: dataset,
   wrapper: wrapper
 });
-
-/**
- * Fonction de test à appliquée pour :
- * - myObject.paths.init()
- */
-function testOf_pathsInit(fn, item, cb) {
-  var result = fn(item.arguments.paths, item.arguments.root);
-  return cb(result.test);
-}
-
-/**
- * Fonction de test à appliquée pour :
- * - myObject.resources.require()
- */
-function testOf_resourcesRequire(fn, item, cb) {
-  var paths = myObject.paths.init(item.arguments.paths, __dirname);
-  return cb(fn(paths));
-}
 
 /**
  * Fonction de test à appliquée pour :

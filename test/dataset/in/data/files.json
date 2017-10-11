@@ -2,7 +2,7 @@
   "createIstexPath": [{
     "label": "Devrait retourner un chemin correctement construit (non null)",
     "arguments": {
-      "corpusPath": "/my/path/",
+      "outputPath": "/my/path/",
       "id": "0000000000000000000000000000000000000000",
       "type": "enrichments",
       "label": "mymodule",
@@ -15,7 +15,7 @@
   }, {
     "label": "Devrait retourner null",
     "arguments": {
-      "corpusPath": "/my/path/",
+      "outputPath": "/my/path/",
       "type": "enrichments",
       "label": "mymodule",
       "extension": ".tei.xml"
@@ -27,7 +27,7 @@
   "createPath": [{
     "label": "Devrait retourner un chemin correctement construit (non null)",
     "arguments": {
-      "corpusPath": "/my/path/",
+      "outputPath": "/my/path/",
       "id": "test",
       "label": "mymodule",
       "extension": ".tei.xml"
@@ -39,7 +39,7 @@
   }, {
     "label": "Devrait retourner null",
     "arguments": {
-      "corpusPath": "/my/path/",
+      "outputPath": "/my/path/",
       "label": "mymodule",
       "extension": ".tei.xml"
     },
