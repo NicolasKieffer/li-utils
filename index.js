@@ -4,7 +4,7 @@
 'use strict';
 
 /* Module Require */
-let dateFormat = require('dateformat'),
+const dateFormat = require('dateformat'),
   cheerio = require('cheerio'),
   mkdirp = require('mkdirp'),
   mustache = require('mustache'),
@@ -14,13 +14,8 @@ let dateFormat = require('dateformat'),
   extend = require('util')._extend,
   child_process = require('child_process');
 
-let JS_EXTENSION = new RegExp(/(.js(on)?)$/g);
-
-/* Constantes */
-const RESOURCES_FILE = 'resources.json';
-
 // Main Object
-let object = {};
+const object = {};
 
 // Regroupe les fonctions liées aux fichiers dans la chaine LoadIstex
 object.files = {};
@@ -41,7 +36,7 @@ object.files.selectAll = function(files, options) {
   let result = [],
     _files = extend([], files); // copy du Tableau de fichier
   for (let x = 0; x < options.length; x++) {
-    let keys = Object.keys(options[x]);
+    const keys = Object.keys(options[x]);
     while (_files.length > 0) {
       let found = true,
         file = _files.shift();
@@ -71,7 +66,7 @@ object.files.selectAll = function(files, options) {
  */
 object.files.select = function(files, options) {
   for (let i = 0; i < options.length; i++) {
-    let result = object.files.get(files, options[i]);
+    const result = object.files.get(files, options[i]);
     if (result) return result;
   }
   return null;
@@ -87,7 +82,7 @@ object.files.select = function(files, options) {
  * @return {Object} L'objet correspondant ou null
  */
 object.files.get = function(files, criteria) {
-  let keys = Object.keys(criteria);
+  const keys = Object.keys(criteria);
   for (let i = 0; i < files.length; i++) {
     let found = true;
     for (let j = 0; j < keys.length; j++) {
@@ -164,7 +159,7 @@ object.enrichments.save = function(enrichments, options) {
     enrichments[options.label] = [];
     enrichments[options.label].push(options.enrichment);
   } else {
-    let isAlready = object.files.get(enrichments[options.label], options.enrichment);
+    const isAlready = object.files.get(enrichments[options.label], options.enrichment);
     // Si l'objet n'est pas déjà dans le jsonLine
     if (!isAlready) {
       // Ajout de l'enrichissement
@@ -210,7 +205,7 @@ object.XML = {};
  * @return {Object} Objet JSON représentant le document XML ou null
  */
 object.XML.load = function(xmlStr) {
-  let result = cheerio.load(xmlStr, {
+  const result = cheerio.load(xmlStr, {
     xmlMode: true
   });
   return (Object.keys(result).length > 0) ? result : null;
@@ -226,9 +221,9 @@ object.URL = {};
  * @return {String} L'url complète encodée
  */
 object.URL.addParameters = function(url, parameters) {
-  let keys = Object.keys(parameters),
-    result = '?',
+  const keys = Object.keys(parameters),
     separator = '&';
+  let result = '?';
   for (let i = 0; i < keys.length; i++) {
     result += keys[i] + '=' + encodeURIComponent(parameters[keys[i]]) + ((i < keys.length - 1) ? '&' : '');
   }
@@ -244,7 +239,7 @@ object.dates = {};
  * @return {String} Date au format souhaité
  */
 object.dates.now = function(format) {
-  let arg = format || 'dd-mm-yyyy';
+  const arg = format || 'dd-mm-yyyy';
   return dateFormat(new Date(Date.now()), arg);
 };
 
@@ -266,16 +261,16 @@ object.services = {};
  */
 object.services.post = function(options, cb) {
   let _err = null,
-    _res = null;
+    res = null;
   // Vérification de l'existence du fichier à envoyer
   fs.stat(options.filename, function(err, stats) {
     // Lecture impossible
     if (err) {
       _err = new Error(err);
-      return cb(_err, _res);
+      return cb(_err, res);
     }
     // Création du form data
-    let formData = {
+    const formData = {
       file: fs.createReadStream(options.filename)
     };
     // Requête POST sur le service
@@ -287,7 +282,7 @@ object.services.post = function(options, cb) {
       // Erreur
       if (err) {
         _err = new Error(err);
-        return cb(_err, _res);
+        return cb(_err, res);
       }
       // Retourne le résultat de la requête
       return cb(_err, {
@@ -316,7 +311,7 @@ object.services.post = function(options, cb) {
  */
 object.services.transformXML = function(options, cb) {
   // Spawn du process qui effectura la transformation XSLT
-  let xsltproc = child_process.spawn('xsltproc', [
+  const xsltproc = child_process.spawn('xsltproc', [
       '--output',
       options.output,
       '--stringparam',
@@ -337,21 +332,21 @@ object.services.transformXML = function(options, cb) {
 
   // Write stdout in Logs
   xsltproc.stdout.on('data', function(data) {
-    let str = data.toString();
+    const str = data.toString();
     logs.stdout.push(str);
     return output.push('[stdout] ' + str);
   });
 
   // Write stderr in Logs
   xsltproc.stderr.on('data', function(data) {
-    let str = data.toString();
+    const str = data.toString();
     logs.stderr.push(str);
     return output.push('[stderr] ' + data.toString());
   });
 
   // On error
   xsltproc.on('error', function(err) {
-    let res = {
+    const res = {
       'logs': logs,
       'output': output
     };
@@ -360,7 +355,7 @@ object.services.transformXML = function(options, cb) {
 
   // On close
   xsltproc.on('close', function(code) {
-    let res = {
+    const res = {
       'logs': logs,
       'output': output,
       'code': code
