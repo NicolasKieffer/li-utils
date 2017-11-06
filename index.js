@@ -133,7 +133,7 @@ object.files.createPath = function(options) {
   let result = null;
   if (options && options.id) {
     result = {
-      'directory': path.join(options.outputPath, options.id),
+      'directory': path.join(options.outputPath, options.label),
       'filename': options.id + ((options.label) ? '.' : '') + options.label + options.extension
     };
   }
