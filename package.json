@@ -19,7 +19,7 @@
     "mkdirp": "^0.5.1",
     "mocha": "^3.2.0",
     "mustache": "^2.2.1",
-    "auto-tu": "https://github.com/NicolasKieffer/auto-tu.git",
+    "auto-tu": "1.0.0",
     "request": "^2.74.0"
   }
 }
