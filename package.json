@@ -13,13 +13,15 @@
   "author": "NicolasKieffer",
   "license": "MIT",
   "dependencies": {
-    "async": "^2.1.4",
+    "async": "^2.6.1",
+    "auto-tu": "^1.1.1",
     "cheerio": "^0.22.0",
     "dateformat": "^1.0.12",
+    "express": "^4.16.3",
     "mkdirp": "^0.5.1",
-    "mocha": "^3.2.0",
+    "mocha": "^5.2.0",
     "mustache": "^2.2.1",
-    "auto-tu": "1.0.0",
-    "request": "^2.74.0"
+    "request": "^2.74.0",
+    "supertest": "^3.3.0"
   }
 }

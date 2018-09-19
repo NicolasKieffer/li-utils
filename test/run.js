@@ -1,24 +1,30 @@
 /* global __dirname, require, process, it */
 'use strict';
 
-var pkg = require('../package.json'),
+const pkg = require('../package.json'),
   myObject = require('../index.js'),
+  supertest = require('supertest'),
   TU = require('auto-tu'),
   fs = require('fs'),
   path = require('path');
 
+let server,
+  request,
+  serverFile = path.resolve('./test/server.js');
+
 // Données de test
-var docObject = require('./dataset/in/docObject.sample.json'),
+const docObject = require('./dataset/in/docObject.sample.json'),
   dataset = {
     "files": require('./dataset/in/data/files.json'),
     "enrichments": require('./dataset/in/data/enrichments.json'),
     "XML": require('./dataset/in/data/XML.json'),
     "URL": require('./dataset/in/data/URL.json'),
-    // "services": require('./dataset/in/data/services.json')
+    "process": require('./dataset/in/data/process.json'),
+    "httpServices": require('./dataset/in/data/httpServices.json')
   };
 
 // Mapping indiquant quelle fonction de test et quelles données utiliser pour chaque fonction
-var wrapper = {
+const wrapper = {
   "files": {
     "createIstexPath": null,
     "createPath": null,
@@ -36,10 +42,32 @@ var wrapper = {
   "URL": {
     "addParameters": testOf_urlAddParameters
   },
-  // "services": {
-  //   "post": testOf_servicesPost,
-  //   "transformXML": testOf_servicesTransformXML
-  // }
+  "process": {
+    "transformXML": testOf_processTransformXML
+  },
+  "httpServices": {
+    "setFilesInFormdata": testOf_httpServicesSetFilesInFormdata,
+    "call": testOf_httpServicesCall
+  }
+};
+
+// Mapping indiquant quelle fonction de test et quel beforeEach utiliser pour chaque fonction
+const before = {
+  "httpServices": {
+    "call": function(done) {
+      server = require(serverFile).listen(8888, done);
+      request = supertest.agent(server);
+    }
+  }
+};
+
+// Mapping indiquant quelle fonction de test et quel afterEach utiliser pour chaque fonction
+const after = {
+  "httpServices": {
+    "call": function(done) {
+      server.close(done);
+    }
+  }
 };
 
 /**
@@ -61,13 +89,22 @@ var wrapper = {
  *
  * - myObject.URL.
  *   - addParameters()
+ *
+ * - myObject.process.
+ *   - transformXML()
+ *
+ * - myObject.httpServices.
+ *   - setFilesInFormdata()
+ *   - call()
  */
 TU.start({
-  description: pkg.name + '/index.js',
-  root: 'myObject',
-  object: myObject,
-  dataset: dataset,
-  wrapper: wrapper
+  "description": pkg.name + '/index.js',
+  "root": 'myObject',
+  "object": myObject,
+  "dataset": dataset,
+  "wrapper": wrapper,
+  "before": before,
+  "after": after
 });
 
 /**
@@ -86,7 +123,7 @@ function testOf_fileRepresentation(fn, item, cb) {
  * - myObject.enrichments.save()
  */
 function testOf_enrichmentsSave(fn, item, cb) {
-  var before = (item.arguments.enrichments && item.arguments.enrichments[item.arguments.options.label]) ? item.arguments.enrichments[item.arguments.options.label].length : 0, // Nombre d'enrichissement avant
+  let before = (item.arguments.enrichments && item.arguments.enrichments[item.arguments.options.label]) ? item.arguments.enrichments[item.arguments.options.label].length : 0, // Nombre d'enrichissement avant
     result = fn(item.arguments.enrichments, item.arguments.options),
     after = result[item.arguments.options.label].length; // Nombre d'enrichissement aprés
   return cb(after - before);
@@ -113,7 +150,7 @@ function testOf_enrichmentsWrite(fn, item, cb) {
  * - myObject.XML.load()
  */
 function testOf_xmlLoad(fn, item, cb) {
-  var xmlStr = fs.readFileSync(path.join(__dirname, item.path), 'utf-8');
+  let xmlStr = fs.readFileSync(path.join(__dirname, item.path), 'utf-8');
   return cb(fn(xmlStr).html().length);
 }
 
@@ -127,29 +164,41 @@ function testOf_urlAddParameters(fn, item, cb) {
 
 /**
  * Fonction de test à appliquée pour :
- * - myObject.services.post()
+ * - myObject.process.transformXML()
  */
-function testOf_servicesPost(fn, item, cb) {
-  return fn(item.arguments.options, function(err, res) {
-    return cb(err);
-  });
-}
-
-/**
- * Fonction de test à appliquée pour :
- * - myObject.services.transformXML()
- */
-function testOf_servicesTransformXML(fn, item, cb) {
+function testOf_processTransformXML(fn, item, cb) {
   return fn(item.arguments.options, function(err, res) {
     return cb(res.code);
   });
 }
 
+/**
+ * Fonction de test à appliquée pour :
+ * - myObject.httpServices.setFilesInFormdata()
+ */
+function testOf_httpServicesSetFilesInFormdata(fn, item, cb) {
+  return fn(item.arguments.files, item.arguments.formData, function(err, res) {
+    if (err) return cb(err.toString());
+    return cb(Object.keys(res));
+  });
+}
+
+/**
+ * Fonction de test à appliquée pour :
+ * - myObject.httpServices.call()
+ */
+function testOf_httpServicesCall(fn, item, cb) {
+  return fn(item.arguments.options, item.arguments.retry, function(err, res) {
+    if (err) return cb(err.toString());
+    return cb(res.httpResponse.statusCode);
+  });
+}
+
 // Set une regex pour chaque clée demandée
 function setRegex(keys, options) {
-  for (var i = 0; i < keys.length; i++) {
+  for (let i = 0; i < keys.length; i++) {
     if (options instanceof Array) {
-      for (var j = 0; j < options.length; j++) {
+      for (let j = 0; j < options.length; j++) {
         options[j][keys[i]] = new RegExp(options[j][keys[i]]);
       }
     } else {

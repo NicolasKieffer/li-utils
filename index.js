@@ -5,6 +5,7 @@
 
 /* Module Require */
 const dateFormat = require('dateformat'),
+  async = require('async'),
   cheerio = require('cheerio'),
   mkdirp = require('mkdirp'),
   mustache = require('mustache'),
@@ -243,15 +244,13 @@ object.dates.now = function(format) {
   return dateFormat(new Date(Date.now()), arg);
 };
 
-// Regroupe les fonctions liées aux services
-object.services = {};
+// Regroupe les fonctions liées aux httpServices
+object.httpServices = {};
 
 /**
- * Effectue une requête HTTP (méthode POST) sur un service
- * @param {Object} options Objet comportant toutes les informations nécessaire à la requête :
- *  - {String} filename Nom du fichier
- *  - {Object} headers Headers de la requête
- *  - {String} url Url d'accès au service 
+ * Construit un FormData contenant des fichiers
+ * @param {Object} files Object contenant les fichiers à uploader (sous la forme 'key': 'path')
+ * @param {Object} formData FormData déjà existant
  * @param {function} cb Callback appelée à la fin du traitement, avec comme paramètre disponible :
  *  - {Error} err Erreur de Lecture/Écriture
  *  - {Object} res Résultat de la réponse, sous la forme :
@@ -259,39 +258,102 @@ object.services = {};
  *    - {String} body Body de la réponse
  * @return {undefined} undefined
  */
-object.services.post = function(options, cb) {
-  let _err = null,
-    res = null;
-  // Vérification de l'existence du fichier à envoyer
-  fs.stat(options.filename, function(err, stats) {
-    // Lecture impossible
-    if (err) {
-      _err = new Error(err);
-      return cb(_err, res);
-    }
-    // Création du form data
-    const formData = {
-      file: fs.createReadStream(options.filename)
-    };
-    // Requête POST sur le service
-    request.post({
-      headers: options.headers,
-      url: options.url,
-      formData: formData
-    }, function(err, httpResponse, body) {
-      // Erreur
+object.httpServices.setFilesInFormdata = function(files, formData = {}, cb) {
+  let _err = null;
+  return async.each(Object.keys(files),
+    function(key, callback) {
+      const filename = files[key];
+      // Vérification de l'existence du fichier à envoyer
+      return fs.stat(filename, function(err, stats) {
+        // Lecture impossible
+        if (err) {
+          _err = new Error(err);
+          return callback(_err);
+        }
+        // Création du form data
+        formData[key] = fs.createReadStream(filename);
+        return callback();
+      });
+    },
+    function(err) {
       if (err) {
         _err = new Error(err);
-        return cb(_err, res);
+        return cb(_err);
       }
-      // Retourne le résultat de la requête
-      return cb(_err, {
-        "httpResponse": httpResponse,
-        "body": body
-      });
+      return cb(_err, formData);
     });
-  });
 };
+
+/**
+ * Appel un service (via une requête HTTP). En cas d'échec, la requête sera relancée le nombre de fois souhaité
+ * @param {Object} options Objet comportant toutes les informations nécessaire à la requête :
+ *  - {String} method Method utilisée pour la requête HTTP
+ *  - {String} HTTP_STATUS_RETRY Regex indiquand pour quelle code HTTP il faudra lancer le retry (ex : 403, mais pas le 200 normalement?!)
+ *  - {Object} formData FormData de la requête
+ *  - {Object} headers Headers de la requête
+ *  - {String} url Url d'accès au service 
+ * @param {Object} retry Paramètre du retry en cas d'échec :
+ *  - {Integer} times Nombre d'essai
+ *  - {Integer} interval Timeout entre chaque essai
+ * @param {function} cb Callback appelée à la fin du traitement, avec comme paramètre disponible :
+ *  - {Error} err Erreur de Lecture/Écriture
+ *  - {Object} res Résultat de la réponse, sous la forme :
+ *    - {Object} httpResponse Réponse HTTP
+ *    - {String} body Body de la réponse
+ * @return {undefined} undefined
+ */
+object.httpServices.call = function(options, retry = null, cb) {
+  let _err = null;
+  // Initialisation du retry
+  if (!retry) retry = {
+    "times": 1,
+    "interval": 200
+  };
+  // Initialisation du formData
+  if (!options.formData) options.formData = {};
+  // Création de la regex
+  const HTTP_STATUS_RETRY = (options.HTTP_STATUS_RETRY) ? new RegExp(options.HTTP_STATUS_RETRY) : new RegExp("^4[0-9]{2}$");
+  // Requête POST sur le service
+  return async.retry(retry,
+    // Requête POST sur le service
+    function(callback, results) {
+      return request({
+          method: options.method,
+          headers: options.headers,
+          url: options.url,
+          formData: options.formData
+        },
+        function(err, httpResponse, body) {
+          if (err) return callback(null, err);
+          // Si le service ne répond pas correctement
+          if (httpResponse.statusCode.toString().match(HTTP_STATUS_RETRY)) return callback(true, {
+            httpResponse,
+            body
+          });
+          return callback(null, {
+            httpResponse,
+            body
+          });
+        });
+    },
+    // Result of retry
+    /* 
+     * err can only be equal to :
+     * - true : the retry failed so there is the last HTTP Response in result
+     * - null : result will contain an Error (in case of unavailable service) or an HTTP Response (retry works)
+     */
+    function(err, result) {
+      // Erreur Service
+      if (!result.httpResponse) {
+        _err = new Error(result);
+        return cb(_err, result);
+      }
+      return cb(_err, result);
+    });
+};
+
+// Regroupe les fonctions liées aux process
+object.process = {};
 
 /**
  * Applique une feuille xslt sur un document XML (provenant d'un service)
@@ -309,7 +371,7 @@ object.services.post = function(options, cb) {
  *    - {Integer} code Code de retour du process
  * @return {undefined} Return undefined
  */
-object.services.transformXML = function(options, cb) {
+object.process.transformXML = function(options, cb) {
   // Spawn du process qui effectura la transformation XSLT
   const xsltproc = child_process.spawn('xsltproc', [
       '--output',

@@ -1,49 +1,4 @@
 {
-  "post": [{
-    "label": "Devrait fonctionner correctement",
-    "arguments": {
-      "options": {
-        "filename": "./test/dataset/in/resources/SUCCESS.pdf",
-        "headers": {
-          "Accept": "application/xml"
-        },
-        "url": "http://vi-istex-gkn.intra.inist.fr:8070/processKeyTermArticlePDF"
-      }
-    },
-    "result": {
-      "equal": null
-    }
-  }, {
-    "label": "Devrait renvoyer une erreur ENOENT",
-    "arguments": {
-      "options": {
-        "filename": "./test/dataset/in/resources/ERROR_ENOENT.pdf",
-        "headers": {
-          "Accept": "application/xml"
-        },
-        "url": "http://vi-istex-gkn.intra.inist.fr:8070/processKeyTermArticlePDF"
-      }
-    },
-    "result": {
-      "not": true,
-      "equal": null
-    }
-  }, {
-    "label": "Devrait renvoyer une erreur TIMEOUT",
-    "arguments": {
-      "options": {
-        "filename": "./test/dataset/in/resources/SUCCESS.pdf",
-        "headers": {
-          "Accept": "application/xml"
-        },
-        "url": "http://vi-istex-gkn.intra.inist.fr:8060/processKeyTermArticlePDF"
-      }
-    },
-    "result": {
-      "not": true,
-      "equal": null
-    }
-  }],
   "transformXML": [{
     "label": "Devrait correctement lancer la transformation du fichier XML",
     "arguments": {

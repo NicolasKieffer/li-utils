@@ -1,0 +1,119 @@
+{
+  "setFilesInFormdata": [{
+    "label": "Devrait correctement remplir le formData (1 fichier à upload)",
+    "arguments": {
+      "files": {
+        "file": "./test/dataset/in/resources/success/test.json"
+      },
+      "formData": {}
+    },
+    "result": {
+      "length": 1
+    }
+  }, {
+    "label": "Devrait correctement remplir le formData (2 fichiers à upload)",
+    "arguments": {
+      "files": {
+        "file1": "./test/dataset/in/resources/success/resources.json",
+        "file2": "./test/dataset/in/resources/success/test.json"
+      },
+      "formData": {}
+    },
+    "result": {
+      "length": 2
+    }
+  }, {
+    "label": "Ne devrait pas trouver le fichier à upload",
+    "arguments": {
+      "files": {
+        "file": "./test/dataset/in/resources/success/ERROR_ENOENT.json"
+      },
+      "formData": {}
+    },
+    "result": {
+      "include": "ENOENT"
+    }
+  }, {
+    "label": "Ne devrait pas trouver un des fichiers à upload",
+    "arguments": {
+      "files": {
+        "file1": "./test/dataset/in/resources/success/resources.json",
+        "file2": "./test/dataset/in/resources/success/ERROR_ENOENT.json"
+      },
+      "formData": {}
+    },
+    "result": {
+      "include": "ENOENT"
+    }
+  }],
+  "call": [{
+    "label": "Devrait réussir à appeler le service (GET httpServices/200)",
+    "arguments": {
+      "options": {
+        "method": "GET",
+        "url": "http://localhost:8888/httpServices/200"
+      },
+      "retry": null
+    },
+    "result": {
+      "equal": 200
+    }
+  }, {
+    "label": "Devrait réussir à appeler le service après un retry (GET httpServices/retry)",
+    "arguments": {
+      "options": {
+        "method": "GET",
+        "url": "http://localhost:8888/httpServices/retry"
+      },
+      "retry": {
+        "times": 2,
+        "interval": 500
+      }
+    },
+    "result": {
+      "equal": 200
+    }
+  }, {
+    "label": "Ne devrait pas réussir à appeler le service même après plusieurs retry (GET httpServices/403)",
+    "arguments": {
+      "options": {
+        "method": "GET",
+        "url": "http://localhost:8888/httpServices/403"
+      },
+      "retry": {
+        "times": 5,
+        "interval": 500
+      }
+    },
+    "result": {
+      "equal": 403
+    }
+  }, {
+    "label": "Ne devrait pas réussir à appeler le service (bad adress) sans retry",
+    "arguments": {
+      "options": {
+        "method": "GET",
+        "url": "http://bad.adress/httpServices/403"
+      },
+      "retry": null
+    },
+    "result": {
+      "include": "getaddrinfo ENOTFOUND"
+    }
+  }, {
+    "label": "Ne devrait pas réussir à appeler le service (bad adress) avec retry (retry normalement ignoré)",
+    "arguments": {
+      "options": {
+        "method": "GET",
+        "url": "http://bad.adress/httpServices/403"
+      },
+      "retry": {
+        "times": 5,
+        "interval": 500
+      }
+    },
+    "result": {
+      "include": "getaddrinfo ENOTFOUND"
+    }
+  }]
+}
