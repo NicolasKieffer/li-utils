@@ -70,6 +70,10 @@ const after = {
   }
 };
 
+TU.which({
+  "packages": ["xsltproc"]
+});
+
 /**
  * Test de chaques fonctions de :
  *
